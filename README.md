@@ -1,5 +1,9 @@
 # Bridge Inspection Toolkit
 
+| Testing | 
+| :-----: | 
+| [![Build Status](https://travis-ci.com/phiyodr/bridge-inspection-toolkit.svg?branch=master)](https://travis-ci.com/phiyodr/bridge-inspection-toolkit) | 
+
 
 **Bridge Inspection Toolkit** helps you with dataset handling in the field for Damage Detection for Reinforced Concrete Bridges.
 This DataHub is build for [PyTorch](https://pytorch.org/). 
