@@ -17,7 +17,7 @@ def test_list_datasets():
     assert res[keys[0]]
 
 
-#@pytest.mark.skip(reason="no way of currently testing this")
+@pytest.mark.skip(reason="no way of currently testing this")
 def test_download_dataset():
     cache_dir = os.path.expanduser('~/.bikit')
     #download_dataset(name='demo_zip', cache_dir=cache_dir)
