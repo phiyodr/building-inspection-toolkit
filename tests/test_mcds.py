@@ -5,6 +5,8 @@ import sys
 import pytest
 from os import path, makedirs
 import torch
+import numpy as np
+from PIL import Image
 
 # Import module under test
 #sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
