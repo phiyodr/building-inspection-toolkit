@@ -7,6 +7,7 @@ from PIL import Image
 from torchvision import transforms
 from os.path import dirname
 from bikit.utils import pil_loader
+from pathlib import Path
 
 
 #parent_dir = os.path.abspath(".")
@@ -25,7 +26,7 @@ class McdsDataset(Dataset):
     """PyTorch Dataset for MCDS. Multiclass-singlelabel dataset with 10 classes."""
     bikit_path = dirname(dirname(__file__))
 
-    with open(os.path.join(bikit_path, "data/datasets.json")) as f:
+    with open(Path(os.path.join(bikit_path, "data/datasets.json"))) as f:
         DATASETS = json.load(f)
     #name="mcds"
 
@@ -46,15 +47,15 @@ class McdsDataset(Dataset):
         assert name in list(self.DATASETS.keys()), f"This name does not exists. Use something from {list(DATASETS.keys())}."
         self.name = name
         assert split_type in ["", "trainval_bikit", "test_bikit"], f'You used split_type str({split_type}). Only ["", "trainval_bikit", "test_bikit"] are allowed.'
-        bikit_path = dirname(dirname(__file__))
-        self.csv_filename = os.path.join(bikit_path, "data", self.name) + ".csv"
+        bikit_path = Path(dirname(dirname(__file__)))
+        self.csv_filename = Path(os.path.join(bikit_path, "data", self.name) + ".csv")
 
         # Misc
         self.split_type = split_type
         if cache_dir:
-            self.cache_full_dir = os.path.join(cache_dir)
+            self.cache_full_dir = Path(os.path.join(cache_dir))
         else:
-            self.cache_full_dir = os.path.join(os.path.expanduser("~"), ".bikit")
+            self.cache_full_dir = Path(os.path.join(os.path.expanduser("~"), ".bikit"))
 
         self.devel_mode = devel_mode
         self.class_names = ['Cracks', 'Efflorescence', 'Scaling', 'Spalling', 'General', 'NoDefect',
@@ -80,7 +81,7 @@ class McdsDataset(Dataset):
         where 1 indicates that the label is present."""
         data = self.df.iloc[index]
         # Load and transform image
-        img_filename = os.path.join(self.cache_full_dir, data['img_path'])
+        img_filename = Path(os.path.join(self.cache_full_dir, data['img_path']))
         img = pil_loader(img_filename)
         if self.transform:
             img = self.transform(img)

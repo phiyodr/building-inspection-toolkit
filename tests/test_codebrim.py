@@ -7,15 +7,16 @@ from os import path, makedirs
 import torch
 import numpy as np
 from PIL import Image
+from pathlib import Path
 
 # Import module under test
 #sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from bikit.datasets.codebrim import CodebrimDataset
 
-if path.expanduser('~') == "/home/travis":
-    image_path = "/home/travis/.bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
+if path.expanduser('~') == Path("/home/travis"):
+    image_path = Path("/home/travis/.bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/")
     makedirs(image_path)
-    image_file = "/home/travis/.bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
+    image_file = Path("/home/travis/.bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png")
     img_np = np.ones((379, 513, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
