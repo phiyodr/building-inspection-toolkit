@@ -5,3 +5,4 @@ torchvision
 pandas
 Pillow
 patool
+pathlib
