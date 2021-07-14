@@ -15,11 +15,13 @@ def test_list_datasets():
     assert len(keys) >= 3
     assert res[keys[0]]
 
+
 def test_download_dataset():
     cache_dir = os.path.expanduser('~/.bikit-test')
 
-    download_dataset(name='demo_zip', cache_dir=cache_dir)
+    #download_dataset(name='demo_zip', cache_dir=cache_dir)
     download_dataset(name='demo_rar', cache_dir=cache_dir)
+    assert os.path.exists(os.path.join(cache_dir, "rar_demo/demo_rar.rar"))
+    assert os.path.exists(os.path.join(cache_dir, "rar_demo/multi_classifier_data"))
 
-    os.remove(cache_dir)
     print("===Done===")

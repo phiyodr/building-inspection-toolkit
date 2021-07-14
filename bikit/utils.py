@@ -8,6 +8,7 @@ import pprint
 from os.path import dirname
 from PIL import Image
 from patoolib import extract_archive
+from time import sleep
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -22,11 +23,12 @@ DEMO_DATASETS = {"demo_zip": {"description":  "",
                  "checksum": "todo",
                  "size": "7.9 GB"},
   "demo_rar": {"description":  "",
-                 "download_name": "demo_rar",
-                 "url" : "todo",
+                 "download_name": "rar_demo",
+                 "url" : "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/demo_rar.rar",
                  "original_name": "demo_rar.rar",
                  "checksum": "63b3722e69dcf7e14c879411c1907dae",
-                 "size": "3.7 MB"},
+                 "size": "3.7 MB"}}
+
 
 
 def pil_loader(path) -> Image.Image:
@@ -58,7 +60,8 @@ def download_dataset(name, cache_dir='~/.bikit'):
     :return:
     """
     if "demo" in name:
-        pass
+        DATASETS = DEMO_DATASETS
+        print(DATASETS[name])
     else:
         assert name in list(DATASETS.keys()), f"Please specify a valid <name> out of {list(DATASETS.keys())}. You used {name}."
     # Check if cache exist
@@ -86,6 +89,7 @@ def download_dataset(name, cache_dir='~/.bikit'):
         # Download
         print(f"Start to download {size} of data")
         urllib.request.urlretrieve(url, cache_zip, _schedule)
+        sleep(1)
         print("\nDownload done!")
         # Unzip/unrar
         if file_type == "zip":
@@ -100,6 +104,7 @@ def download_dataset(name, cache_dir='~/.bikit'):
             except Exception as e:
                 print(e)
                 print("Have you installed rar? Try <apt install unrar>.")
+                raise
             print("Unrar done!")
     else:
         print(f"{cache_dir} and {cache_full_dir} already exists")
