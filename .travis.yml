@@ -14,10 +14,7 @@ before_script:
 
 script:
   - pytest --cov-config=.coveragerc --cov=bikit
-  - travis-sphinx build --source=doc/source
 
-after_success:
-  - travis-sphinx deploy
 
 # deploy:
 #   provider: pypi
