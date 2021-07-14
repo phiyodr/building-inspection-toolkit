@@ -12,18 +12,15 @@ from PIL import Image
 #sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from bikit.datasets.codebrim import CodebrimDataset
 
+if path.expanduser('~') == "/home/travis":
+    image_path = "/home/travis/.bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
+    makedirs(image_path)
+    image_file = "/home/travis/.bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
+    img_np = np.ones((379, 513, 3), dtype=np.int8) * 100
+    img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
+    img_pil.save(image_file)
 
 def test_codebrim():
-    if path.expanduser('~') == "/home/travis":
-        image_path = "/home/travis/.bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
-        makedirs(image_path)
-        image_file = "/home/travis/.bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
-        img_np = np.ones((379, 513, 3), dtype=np.int8) * 100
-        img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
-        img_pil.save(image_file)
-
-
-
     all_dataset = CodebrimDataset(split_type="")
     train_dataset = CodebrimDataset(split_type="train")
     val_dataset = CodebrimDataset(split_type="val")
