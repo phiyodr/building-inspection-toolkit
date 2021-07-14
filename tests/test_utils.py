@@ -4,6 +4,7 @@
 import sys
 import os
 import pytest
+from pathlib import Path
 
 # Import module under test
 #sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
@@ -19,10 +20,10 @@ def test_list_datasets():
 
 @pytest.mark.skip(reason="no way of currently testing this")
 def test_download_dataset():
-    cache_dir = os.path.expanduser('~/.bikit')
+    cache_dir = Path(os.path.expanduser('~/.bikit'))
     #download_dataset(name='demo_zip', cache_dir=cache_dir)
     download_dataset(name='demo_rar', cache_dir=cache_dir)
-    assert os.path.exists(os.path.join(cache_dir, "rar_demo/demo_rar.rar"))
-    assert os.path.exists(os.path.join(cache_dir, "rar_demo/multi_classifier_data"))
+    assert os.path.exists(cache_dir / "rar_demo/demo_rar.rar")
+    assert os.path.exists(cache_dir / "rar_demo/multi_classifier_data")
 
     print("===Done===")

@@ -31,7 +31,8 @@ DEMO_DATASETS = {"demo_zip": {"description":  "",
 
 
 
-def pil_loader(path) -> Image.Image:
+def pil_loader(path):
+    """Outputs an PIL Image object"""
     # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
     with open(path, 'rb') as f:
         img = Image.open(f)

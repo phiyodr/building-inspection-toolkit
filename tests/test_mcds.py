@@ -13,10 +13,11 @@ from pathlib import Path
 #sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from bikit.datasets.mcds import McdsDataset
 
-if path.expanduser('~') == Path("/home/travis"):
-    image_path = Path("/home/travis/.bikit/mcds/ExposedReinforcement/no exposed reinforcement")
+home_path = Path(path.expanduser('~'))
+if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]:
+    image_path = home_path / ".bikit/mcds/ExposedReinforcement/no exposed reinforcement"
     makedirs(image_path)
-    image_file = Path("/home/travis/.bikit/mcds/ExposedReinforcement/no exposed reinforcement/FL-580075-FLD-DC-VI-011-103-DSCF2194_44s5dewc.st1.jpg")
+    image_file = home_path / ".bikit/mcds/ExposedReinforcement/no exposed reinforcement/FL-580075-FLD-DC-VI-011-103-DSCF2194_44s5dewc.st1.jpg"
     img_np = np.ones((297, 615, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
