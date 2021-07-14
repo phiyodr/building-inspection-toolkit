@@ -1,0 +1,31 @@
+language: python
+
+notifications:
+  email: false
+
+python:
+  - '3.6'
+  - '3.7'
+  - '3.8'
+  
+dist: xenial
+
+before_script:
+  - pip install -U -r requirements.txt
+  - pip install -U -r test_requirements.txt
+
+script:
+  - pytest --cov-config=.coveragerc --cov=bikit
+  - travis-sphinx build --source=doc/source
+
+after_success:
+  - travis-sphinx deploy
+
+# deploy:
+#   provider: pypi
+#   user:
+#     secure: YOUR_PYPI_USER_PUBLIC_SECRET_HERE
+#   password:
+#     secure: YOUR_PYPI_PASS_PUBLIC_SECRET_HERE
+#   on:
+#     tags: true
