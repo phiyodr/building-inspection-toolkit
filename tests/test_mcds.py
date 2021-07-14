@@ -3,7 +3,7 @@
 # Test Modules
 import sys
 import pytest
-from os import path
+from os import path, makedirs
 import torch
 
 # Import module under test
@@ -30,6 +30,8 @@ def test_mcds_bikit():
 
 def test_mcds_bukhsh():
     if path.expanduser('~') == "/home/travis":
+        image_path = "/home/travis/.bikit/mcds/ExposedReinforcement/no exposed reinforcement"
+        os.makedirs(image_path)
         image_file = "/home/travis/.bikit/mcds/ExposedReinforcement/no exposed reinforcement/FL-580075-FLD-DC-VI-011-103-DSCF2194_44s5dewc.st1.jpg"
         img_np = np.ones((297, 615, 3), dtype=np.int8) * 100
         img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
