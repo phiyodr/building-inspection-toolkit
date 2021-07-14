@@ -29,6 +29,13 @@ def test_mcds_bikit():
     assert len(development_dataset) == 100
 
 def test_mcds_bukhsh():
+    if path.expanduser('~') == "/home/travis":
+        image_file = "/home/travis/.bikit/mcds/ExposedReinforcement/no exposed reinforcement/FL-580075-FLD-DC-VI-011-103-DSCF2194_44s5dewc.st1.jpg"
+        img_np = np.ones((297, 615, 3), dtype=np.int8) * 100
+        img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
+        img_pil.save(image_file)
+
+
     all_dataset = McdsDataset(name="mcds_Bukhsh", split_type="")
     trainval_dataset = McdsDataset(name="mcds_Bukhsh", split_type="trainval_bikit")
     test_dataset = McdsDataset(name="mcds_Bukhsh", split_type="test_bikit")
