@@ -24,22 +24,22 @@ CODEBRIM [Paper](https://openaccess.thecvf.com/content_CVPR_2019/html/Mundt_Meta
 COCOBridge  | 4-Class OD  | 774/+2,500 | not yet | ukn
 
 
-## Different dataset versions (`name`) and differnt splits (`split_style`)
+## Different dataset versions (`name`) and different splits (`split_style`)
 
 **Splits** 
 
-We want to provide carefully selected train/valid/test resp. trainval/test splits (where dataset size is small) to create comparability for theses datasets. That means that we introduce splits where they are not available or update spits where we think this is useful. 
+We provide carefully selected *train/valid/test* (for large datasets) resp. *trainval/test splits* (for small datasets) to create comparability for theses datasets. That means that we introduce splits, when they are not available or update spits where we think this is useful. 
 
 
 **Different versions**
 
-For some datasets differnt versions exists. This may be that the authors already provide different version (e.g. CODEBRIM) or other authors update datasets (e.g. Bukhsh for MCDS).
+For some datasets different versions exists. This may be that the authors already provide different version (e.g. CODEBRIM) or other authors update datasets (e.g. Bukhsh for MCDS).
 
 
 | `name` | `split_type`s with splits | Note |
 |--------|---------------------------|-------------------------------|
 `mcds_Bukhsh` | No original splits available. **`bikit`** with `trainval` (for [CV](https://en.wikipedia.org/wiki/Cross-validation_(statistics))) and `test`  | Bukhsh et al. creates a 10 class dataset out of the 3-step dataset from Hüthwohl et al.  |
-`mcds_bikit` | **`bikit`** with `trainval` (for [CV](https://en.wikipedia.org/wiki/Cross-validation_(statistics))) and `test` |
+`mcds_Bikit` | **`bikit`** with `trainval` (for [CV](https://en.wikipedia.org/wiki/Cross-validation_(statistics))) and `test` |
 `codebrim-classif-balanced` | **`original`** with `train`, `valid`, `test` | Underrepresented classes are oversampled.  |
 `codebrim-classif` |  **`original`** with `train`, `valid`, `test` | Underrepresented classes are oversampled. (**TODO**) |
 
@@ -59,7 +59,11 @@ download_dataset("<name>")
 
 ### `mcds_Bukhsh`
 
-The orginal version is a sequential 3-step approach, which is not provided. Bukhsh et al. structure it as a 10-class problem.
+The original version from Hüthwohl‬ et al. is a sequential 3-step approach, which is not provided. [Bukhsh et al.](https://link.springer.com/article/10.1007/s00521-021-06279-x) structure it as a 10-class problem.
+
+Classes: Cracks, Efflorescence, Scaling, Spalling, General, NoDefect (from 1st stage), ExposedReinforcement, NoExposedReinforcement (2nd stage), RustStaining, NoRustStaining (3rd stage).
+
+[More details]()
 
 ```python
 from bikit.utils import download_dataset
@@ -79,6 +83,7 @@ for i, (imgs, labels) in enumerate(trainval_loader):
 
 ### `mcds_Bikit`
 
+A cleaned version of `mcds_Bukhsh`. 
 
 ```python
 from bikit.utils import download_dataset
@@ -99,7 +104,7 @@ for i, (imgs, labels) in enumerate(trainval_loader):
 
 ### `codebrim-classif-balanced`
 
-Original version from Hütwowhl et al.
+Original version from [Mundt et al](https://openaccess.thecvf.com/content_CVPR_2019/html/Mundt_Meta-Learning_Convolutional_Neural_Architectures_for_Multi-Target_Concrete_Defect_Classification_With_CVPR_2019_paper.html).
 
 ```python
 from bikit.utils import download_dataset
@@ -127,4 +132,4 @@ pytest
 
 #### Repo
 
-The repo stucture is based on https://github.com/sisl/python_package_template.
+The repo structure is based on https://github.com/sisl/python_package_template.
