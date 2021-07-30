@@ -130,7 +130,7 @@ def _progressbar(cur, total=100):
     sys.stdout.flush()
 
 
-def _schedule(blocknum,blocksize,totalsize):
+def _schedule(blocknum, blocksize, totalsize):
     """
     Source: https://www.programmersought.com/article/14355722336/
 
