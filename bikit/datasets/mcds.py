@@ -30,14 +30,14 @@ class McdsDataset(Dataset):
         DATASETS = json.load(f)
     #name="mcds"
 
-    def __init__(self,  name="mcds_Bikit", cache_dir=None, split_type="", transform=None,
+    def __init__(self,  name="mcds_Bikit", cache_dir=None, split="", transform=None,
                  load_all_in_mem=False, devel_mode=False):
         """
 
         :param name: Dataset name.
-        :param split_type: Use 'trainval_bikit' or 'test_bikit', or '' (default) for all samples. Disclaimer: There are
+        :param split: Use 'trainval' or 'test', or '' (default) for all samples. Disclaimer: There are
                 no original splits. The authors of bikit introduced this splits for comparability. Due to the dataset
-                size it is recommended to do cross-validation on the trainvalid split.
+                size it is recommended to do cross-validation on the trainval split.
         :param transform: Torch transformation for image data (this depends on your CNN).
         :param cache_dir: Path to cache_dir.
         :param load_all_in_mem: Whether or not to load all image data into memory (this depends on the dataset size and
@@ -46,12 +46,12 @@ class McdsDataset(Dataset):
         """
         assert name in list(self.DATASETS.keys()), f"This name does not exists. Use something from {list(DATASETS.keys())}."
         self.name = name
-        assert split_type in ["", "trainval_bikit", "test_bikit"], f'You used split_type str({split_type}). Only ["", "trainval_bikit", "test_bikit"] are allowed.'
+        assert split in ["", "trainval", "test"], f'You used split str({split}). Only ["", "trainval", "test"] are allowed.'
         bikit_path = Path(dirname(dirname(__file__)))
         self.csv_filename = Path(os.path.join(bikit_path, "data", self.name) + ".csv")
 
         # Misc
-        self.split_type = split_type
+        self.split = split
         if cache_dir:
             self.cache_full_dir = Path(os.path.join(cache_dir))
         else:
@@ -67,8 +67,8 @@ class McdsDataset(Dataset):
         self.transform = transform
 
         self.df = pd.read_csv(self.csv_filename)
-        if split_type:
-            self.df = self.df[self.df["split_type"] == split_type]
+        if split:
+            self.df = self.df[self.df["split_bikit"] == split]
         if devel_mode:
             self.df = self.df[:100]
         self.n_samples = self.df.shape[0]
@@ -96,10 +96,23 @@ class McdsDataset(Dataset):
 
 if __name__ == "__main__":
     print(__file__)
-    all_dataset = McdsDataset(split_type="")
-    trainval_dataset = McdsDataset(split_type="trainval_bikit")
-    test_dataset = McdsDataset(split_type="test_bikit")
-    development_dataset = McdsDataset(split_type="test_bikit", devel_mode=True)
+
+    all_dataset = McdsDataset(name="mcds_Bukhsh", split="")
+    trainval_dataset = McdsDataset(name="mcds_Bukhsh", split="trainval")
+    test_dataset = McdsDataset(name="mcds_Bukhsh", split="test")
+    development_dataset = McdsDataset(name="mcds_Bukhsh", split="test", devel_mode=True)
+
+    print(len(all_dataset) )
+    print(len(trainval_dataset) )
+    print(len(test_dataset))
+    print(len(development_dataset))
+    print("===")
+
+
+    all_dataset = McdsDataset(split="")
+    trainval_dataset = McdsDataset(split="trainval")
+    test_dataset = McdsDataset(split="test")
+    development_dataset = McdsDataset(split="test", devel_mode=True)
 
     print("===")
     img, targets = all_dataset[0]
@@ -115,12 +128,3 @@ if __name__ == "__main__":
     print(len(development_dataset))
     print("===Done===")
 
-    all_dataset = McdsDataset(name="mcds_Bukhsh", split_type="")
-    trainval_dataset = McdsDataset(name="mcds_Bukhsh", split_type="trainval_bikit")
-    test_dataset = McdsDataset(name="mcds_Bukhsh", split_type="test_bikit")
-    development_dataset = McdsDataset(name="mcds_Bukhsh", split_type="test_bikit", devel_mode=True)
-
-    print(len(all_dataset) )
-    print(len(trainval_dataset) )
-    print(len(test_dataset))
-    print(len(development_dataset))
