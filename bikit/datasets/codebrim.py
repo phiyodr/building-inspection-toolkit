@@ -8,7 +8,7 @@ from torchvision import transforms
 from os.path import dirname
 from bikit.utils import pil_loader
 from pathlib import Path
-
+from tqdm import tqdm
 
 #parent_dir = os.path.abspath(".")
 #print(parent_dir)
@@ -70,20 +70,29 @@ class CodebrimDataset(Dataset):
         self.n_samples = self.df.shape[0]
 
         if load_all_in_mem:
-            assert NotImplemented
+            self.img_dict = {}
+            for index, row in tqdm(self.df.iterrows(), total=self.df.shape[0], desc="Load images"):
+                img_filename = Path(os.path.join(self.cache_full_dir, row['img_path']))
+                img_name = row['img_name']
+                img = pil_loader(img_filename)
+                self.img_dict[img_name] = img
 
     def __getitem__(self, index):
         """Returns image as torch.Tensor and label as torch.Tensor with dimension (bs, num_classes)
         where 1 indicates that the label is present."""
         data = self.df.iloc[index]
-        # Load and transform image
-        img_filename = Path(os.path.join(self.cache_full_dir, data['img_path']))
-        print("data['img_path']", data['img_path'])
-        img = pil_loader(img_filename)
+
+        # Get image
+        if self.load_all_in_mem:
+            img = self.img_dict[data['img_name']]
+        else:
+            img_filename = Path(os.path.join(self.cache_full_dir, data['img_path']))
+            img = pil_loader(img_filename)
         if self.transform:
             img = self.transform(img)
         else:
             img = transforms.ToTensor()(img)
+
         # Get label with shape (6,)
         label = torch.FloatTensor(data[self.class_names].to_numpy().astype("float32"))
         return img, label
@@ -94,6 +103,7 @@ class CodebrimDataset(Dataset):
 if __name__ == "__main__":
     print(__file__)
     train_dataset = CodebrimDataset(split_type="")
+    train_dataset = CodebrimDataset(split_type="", load_all_in_mem=True)
     img, targets = train_dataset[0]
     print(img.shape, targets.shape)
     print(len(train_dataset))
