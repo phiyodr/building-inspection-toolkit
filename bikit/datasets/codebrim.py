@@ -31,12 +31,12 @@ class CodebrimDataset(Dataset):
     with open(Path(os.path.join(bikit_path, "data/datasets.json"))) as f:
         DATASETS = json.load(f)
 
-    def __init__(self, name="codebrim-classif-balanced", cache_dir=None, split_type=None, transform=None,
+    def __init__(self, name="codebrim-classif-balanced", split=None, cache_dir=None, transform=None,
                  load_all_in_mem=False, devel_mode=False):
         """
 
         :param name: Dataset name.
-        :param split_type: Use 'train', 'valid' or 'test.
+        :param split: Use 'train', 'valid' or 'test.
         :param transform: Torch transformation for image data (this depends on your CNN).
         :param cache_dir: Path to cache_dir.
         :param load_all_in_mem: Whether or not to load all image data into memory (this depends on the dataset size and
@@ -49,7 +49,7 @@ class CodebrimDataset(Dataset):
         self.csv_filename = Path(os.path.join(bikit_path, "data", name) + ".csv")
 
         # Misc
-        self.split_type = split_type
+        self.split = split
         if cache_dir:
             self.cache_full_dir = Path(os.path.join(cache_dir, name))
         else:
@@ -63,15 +63,15 @@ class CodebrimDataset(Dataset):
         # Data prep
         self.transform = transform
         self.df = pd.read_csv(self.csv_filename)
-        if split_type:
-            self.df = self.df[self.df["split_type"] == split_type]
+        if split:
+            self.df = self.df[self.df["split_type"] == split]
         if devel_mode:
             self.df = self.df[:100]
         self.n_samples = self.df.shape[0]
 
         if load_all_in_mem:
             self.img_dict = {}
-            for index, row in tqdm(self.df.iterrows(), total=self.df.shape[0], desc="Load images"):
+            for index, row in tqdm(self.df.iterrows(), total=self.df.shape[0], desc="Load images in memory"):
                 img_filename = Path(os.path.join(self.cache_full_dir, row['img_path']))
                 img_name = row['img_name']
                 img = pil_loader(img_filename)
@@ -102,8 +102,8 @@ class CodebrimDataset(Dataset):
 
 if __name__ == "__main__":
     print(__file__)
-    train_dataset = CodebrimDataset(split_type="")
-    train_dataset = CodebrimDataset(split_type="", load_all_in_mem=True)
+    train_dataset = CodebrimDataset(split="")
+    train_dataset = CodebrimDataset(split="", load_all_in_mem=True)
     img, targets = train_dataset[0]
     print(img.shape, targets.shape)
     print(len(train_dataset))

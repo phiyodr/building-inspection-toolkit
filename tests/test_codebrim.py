@@ -24,11 +24,11 @@ if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/tra
     img_pil.save(image_file)
 
 def test_codebrim():
-    all_dataset = CodebrimDataset(split_type="")
-    train_dataset = CodebrimDataset(split_type="train")
-    val_dataset = CodebrimDataset(split_type="val")
-    test_dataset = CodebrimDataset(split_type="test")
-    development_dataset = CodebrimDataset(split_type="test", devel_mode=True)
+    all_dataset = CodebrimDataset(split="")
+    train_dataset = CodebrimDataset(split="train")
+    val_dataset = CodebrimDataset(split="val")
+    test_dataset = CodebrimDataset(split="test")
+    development_dataset = CodebrimDataset(split="test", devel_mode=True)
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
