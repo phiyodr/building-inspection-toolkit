@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="bikit",
-    version="0.1.0-alpha",
+    version="0.1.1-alpha",
     author="Philipp J. Roesch, Johannes Flotzinger",
     author_email="philipp.roesch@unibw.de, johannes.flotzinger@unibw.de",
     description="Bridge Inspection Toolkit",
