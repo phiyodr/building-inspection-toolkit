@@ -10,18 +10,6 @@ from bikit.utils import pil_loader
 from pathlib import Path
 from tqdm import tqdm
 
-#parent_dir = os.path.abspath(".")
-#print(parent_dir)
-#with open(os.path.join(parent_dir, "bikit/data/datasets.json")) as f:
-#    DATASETS = json.load(f)
-
-#with open("../data/datasets.json") as f:
-#    DATASETS = json.load(f)
-#ROOT_DIR = dirname(os.path.abspath(__file__))
-#print("ROOT_DIR", ROOT_DIR)
-
-
-
 class CodebrimDataset(Dataset):
     """PyTorch Dataset for CODEBRIM Balanced. Multiclass-multilabel dataset with 6 classes.
     Dataset for Version 'CODEBRIM_classification_balanced_dataset.zip' from

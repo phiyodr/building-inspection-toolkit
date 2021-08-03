@@ -2,6 +2,7 @@
 
 
 [![build](https://travis-ci.com/phiyodr/bridge-inspection-toolkit.svg?branch=master)](https://travis-ci.com/phiyodr/bridge-inspection-toolkit) 
+[![codecov](https://codecov.io/gh/phiyodr/bridge-inspection-toolkit/branch/master/graph/badge.svg?token=U685JTKNLC)](https://codecov.io/gh/phiyodr/bridge-inspection-toolkit)
 [![GitHub license](https://img.shields.io/github/license/phiyodr/bridge-inspection-toolkit.svg)](https://github.com/phiyodr/bridge-inspection-toolkit/blob/master/LICENSE) 
 [![GitHub tag](https://img.shields.io/github/tag/phiyodr/bridge-inspection-toolkit.svg)](https://GitHub.com/phiyodr/bridge-inspection-toolkit/tags/)
 
@@ -68,8 +69,7 @@ download_dataset("<name>")
 
 The original version from Hüthwohl‬ et al. is a sequential 3-step approach, which is not provided. [Bukhsh et al.](https://link.springer.com/article/10.1007/s00521-021-06279-x) structure it as a 10-class problem.
 
-
-[More details](/details/mcds.md)
+[More details](/details/mcds.md).
 
 ```python
 from bikit.utils import download_dataset
@@ -89,7 +89,7 @@ for i, (imgs, labels) in enumerate(trainval_loader):
 
 ### `mcds_Bikit`
 
-A cleaned version of `mcds_Bukhsh`.  
+A cleaned version of `mcds_Bukhsh` with 8 classes.
 
 [More details](/details/mcds.md).
 
@@ -138,6 +138,6 @@ pytest
 
 
 
-#### Repo
+##### Repo
 
 The repo structure is based on https://github.com/sisl/python_package_template.
