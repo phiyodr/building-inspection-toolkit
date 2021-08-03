@@ -18,12 +18,15 @@ def test_list_datasets():
     assert res[keys[0]]
 
 
-@pytest.mark.skip(reason="no way of currently testing this")
+#@pytest.mark.skip(reason="no way of currently testing this")
 def test_download_dataset():
     cache_dir = Path(os.path.expanduser('~/.bikit'))
     #download_dataset(name='demo_zip', cache_dir=cache_dir)
     download_dataset(name='demo_rar', cache_dir=cache_dir)
-    assert os.path.exists(cache_dir / "rar_demo/demo_rar.rar")
-    assert os.path.exists(cache_dir / "rar_demo/multi_classifier_data")
+    assert os.path.exists(cache_dir / "test_rar/test_rar.rar")
+    assert os.path.exists(cache_dir / "test_rar/multi_classifier_data")
 
+    download_dataset(name='demo_rar', cache_dir=cache_dir)
+    assert os.path.exists(cache_dir / "test_zip/test_zip.zip")
+    assert os.path.exists(cache_dir / "test_zip/classification_dataset_balanced")
     print("===Done===")

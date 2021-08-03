@@ -16,16 +16,16 @@ bikit_path = dirname(__file__)
 with open(os.path.join(bikit_path, "data/datasets.json")) as f:
     DATASETS = json.load(f)
 
-DEMO_DATASETS = {"demo_zip": {"description":  "",
-                 "download_name": "demo_zip",
-                 "url" : "tudo",
-                 "original_name": "demo_zip.zip",
-                 "checksum": "todo",
-                 "size": "7.9 GB"},
-  "demo_rar": {"description":  "",
-                 "download_name": "rar_demo",
-                 "url" : "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/demo_rar.rar",
-                 "original_name": "demo_rar.rar",
+DEMO_DATASETS = {"test_zip": {"description":  "",
+                 "download_name": "test_zip",
+                 "url" : "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_zip.zip",
+                 "original_name": "test_zip.zip",
+                 "checksum": "7a054857b3ff7ebc55c567047be97c1a",
+                 "size": "0.2 MB"},
+  "test_rar": {"description":  "",
+                 "download_name": "test_rar",
+                 "url" : "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_rar.rar",
+                 "original_name": "test_rar.rar",
                  "checksum": "63b3722e69dcf7e14c879411c1907dae",
                  "size": "3.7 MB"}}
 
