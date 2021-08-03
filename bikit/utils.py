@@ -60,7 +60,7 @@ def download_dataset(name, cache_dir='~/.bikit'):
     :param cache_dir: Cache directory
     :return:
     """
-    if "demo" in name:
+    if "test" in name:
         DATASETS = DEMO_DATASETS
         print(DATASETS[name])
     else:
