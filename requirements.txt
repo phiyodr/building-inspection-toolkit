@@ -6,3 +6,4 @@ pandas
 Pillow
 patool
 pathlib
+tqdm
