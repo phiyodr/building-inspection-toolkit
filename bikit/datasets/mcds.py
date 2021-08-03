@@ -58,9 +58,8 @@ class McdsDataset(Dataset):
             self.cache_full_dir = Path(os.path.join(os.path.expanduser("~"), ".bikit"))
 
         self.devel_mode = devel_mode
-        self.class_names = ['Cracks', 'Efflorescence', 'Scaling', 'Spalling', 'General', 'NoDefect',
-                            'ExposedReinforcement', 'NoExposedReinforcement', 'RustStaining', 'NoRustStaining']
-        self.num_classes = 10
+        self.class_names = self.DATASETS[name]["class_names"]
+        self.num_classes = self.DATASETS[name]["num_classes"]
         self.load_all_in_mem = load_all_in_mem
 
         # Data prep
@@ -87,7 +86,9 @@ class McdsDataset(Dataset):
             img = self.transform(img)
         else:
             img = transforms.ToTensor()(img)
-        # Get label with shape 10
+        # Get label with shape 10 or 8
+        #print(data, "\n\t", self.class_names)
+        #print(type(data[self.class_names]), data[self.class_names])
         label = torch.FloatTensor(data[self.class_names].to_numpy().astype("float32"))
         return img, label
 
@@ -96,19 +97,22 @@ class McdsDataset(Dataset):
 
 if __name__ == "__main__":
     print(__file__)
+    print("===mcds_Bukhsh")
 
     all_dataset = McdsDataset(name="mcds_Bukhsh", split="")
     trainval_dataset = McdsDataset(name="mcds_Bukhsh", split="trainval")
     test_dataset = McdsDataset(name="mcds_Bukhsh", split="test")
     development_dataset = McdsDataset(name="mcds_Bukhsh", split="test", devel_mode=True)
 
+    img, targets = all_dataset[0]
+    print(len(all_dataset))
+    print(img.shape, targets.shape)
     print(len(all_dataset) )
     print(len(trainval_dataset) )
     print(len(test_dataset))
     print(len(development_dataset))
-    print("===")
 
-
+    print("===mcds_Bikit")
     all_dataset = McdsDataset(split="")
     trainval_dataset = McdsDataset(split="trainval")
     test_dataset = McdsDataset(split="test")
@@ -122,8 +126,8 @@ if __name__ == "__main__":
     print(targets.dtype)
     print("===")
 
-    print(len(all_dataset) )
-    print(len(trainval_dataset) )
+    print(len(all_dataset))
+    print(len(trainval_dataset))
     print(len(test_dataset))
     print(len(development_dataset))
     print("===Done===")

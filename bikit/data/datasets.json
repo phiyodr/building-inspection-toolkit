@@ -16,11 +16,17 @@
                  "url" : "https://zenodo.org/record/2601506/files/multi_classifier_data.rar",
                  "original_name": "multi_classifier_data.rar",
                  "checksum": "f45715cc98601e3edb1835dbd1c658b3",
-                 "size": "543.2 MB"},
+                 "size": "543.2 MB",
+                 "class_names" : ["Cracks", "Efflorescence", "Scaling", "Spalling", "General", "NoDefect",
+                   "ExposedReinforcement", "NoExposedReinforcement", "RustStaining", "NoRustStaining"],
+                 "num_classes": 10},
   "mcds_Bikit": {"description":  "",
                  "download_name": "mcds",
                  "url" : "https://zenodo.org/record/2601506/files/multi_classifier_data.rar",
                  "original_name": "multi_classifier_data.rar",
                  "checksum": "f45715cc98601e3edb1835dbd1c658b3",
-                 "size": "543.2 MB"}
+                 "size": "543.2 MB",
+                 "class_names": ["Cracks", "Efflorescence", "Scaling", "Spalling", "General", "NoDefect",
+                   "ExposedReinforcement", "RustStaining"],
+                 "num_classes": 8}
 }
