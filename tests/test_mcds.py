@@ -15,9 +15,9 @@ from bikit.datasets.mcds import McdsDataset
 
 home_path = Path(path.expanduser('~'))
 if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]:
-    image_path = home_path / ".bikit/mcds/ExposedReinforcement/no exposed reinforcement"
+    image_path = home_path / ".bikit/mcds/Corrosion/no rust staining"
     makedirs(image_path)
-    image_file = home_path / ".bikit/mcds/ExposedReinforcement/no exposed reinforcement/FL-580075-FLD-DC-VI-011-103-DSCF2194_44s5dewc.st1.jpg"
+    image_file = home_path / ".bikit/mcds/Corrosion/no rust staining/001_0fwtaowy.t1o.jpg"
     img_np = np.ones((92, 400, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
