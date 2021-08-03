@@ -27,6 +27,8 @@ before_script:
 script:
   - pytest --cov-config=.coveragerc --cov=bikit
 
+after_success:
+    - codecov # submit coverage
 
 # deploy:
 #   provider: pypi

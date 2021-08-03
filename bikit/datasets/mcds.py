@@ -79,6 +79,7 @@ class McdsDataset(Dataset):
         """Returns image as torch.Tensor and label as torch.Tensor with dimension (bs, num_classes)
         where 1 indicates that the label is present."""
         data = self.df.iloc[index]
+
         # Load and transform image
         img_filename = Path(os.path.join(self.cache_full_dir, data['img_path']))
         img = pil_loader(img_filename)
@@ -86,9 +87,8 @@ class McdsDataset(Dataset):
             img = self.transform(img)
         else:
             img = transforms.ToTensor()(img)
+
         # Get label with shape 10 or 8
-        #print(data, "\n\t", self.class_names)
-        #print(type(data[self.class_names]), data[self.class_names])
         label = torch.FloatTensor(data[self.class_names].to_numpy().astype("float32"))
         return img, label
 
@@ -97,8 +97,8 @@ class McdsDataset(Dataset):
 
 if __name__ == "__main__":
     print(__file__)
-    print("===mcds_Bukhsh")
 
+    print("===mcds_Bukhsh===")
     all_dataset = McdsDataset(name="mcds_Bukhsh", split="")
     trainval_dataset = McdsDataset(name="mcds_Bukhsh", split="trainval")
     test_dataset = McdsDataset(name="mcds_Bukhsh", split="test")
@@ -112,19 +112,17 @@ if __name__ == "__main__":
     print(len(test_dataset))
     print(len(development_dataset))
 
-    print("===mcds_Bikit")
+    print("===mcds_Bikit===")
     all_dataset = McdsDataset(split="")
     trainval_dataset = McdsDataset(split="trainval")
     test_dataset = McdsDataset(split="test")
     development_dataset = McdsDataset(split="test", devel_mode=True)
 
-    print("===")
     img, targets = all_dataset[0]
     print(len(all_dataset))
     print(img.shape, targets.shape)
     print(list(targets.shape))
     print(targets.dtype)
-    print("===")
 
     print(len(all_dataset))
     print(len(trainval_dataset))
