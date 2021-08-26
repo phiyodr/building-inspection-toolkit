@@ -13,6 +13,7 @@ from time import sleep
 pp = pprint.PrettyPrinter(indent=4)
 
 bikit_path = dirname(__file__)
+
 with open(os.path.join(bikit_path, "data/datasets.json")) as f:
     DATASETS = json.load(f)
 
@@ -61,10 +62,11 @@ def download_dataset(name, cache_dir='~/.bikit'):
     :return:
     """
     if "test" in name:
-        DATASETS = DEMO_DATASETS
-        print(DATASETS[name])
+        datasets = DEMO_DATASETS
+        print(datasets[name])
     else:
-        assert name in list(DATASETS.keys()), f"Please specify a valid <name> out of {list(DATASETS.keys())}. You used {name}."
+        datasets = DATASETS
+        assert name in list(datasets.keys()), f"Please specify a valid <name> out of {list(datasets.keys())}. You used {name}."
     # Check if cache exist
     cache_dir = os.path.expanduser(cache_dir)
     if not os.path.exists(cache_dir):
@@ -74,7 +76,7 @@ def download_dataset(name, cache_dir='~/.bikit'):
         print(f"{cache_dir} already exists")
 
     # Set defaults
-    data_dict = DATASETS[name]
+    data_dict = datasets[name]
     download_name = data_dict["download_name"]
     cache_full_dir = os.path.join(cache_dir, download_name)
     cache_zip = os.path.join(cache_full_dir, data_dict['original_name'])
