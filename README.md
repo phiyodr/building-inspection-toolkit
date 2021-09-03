@@ -5,6 +5,7 @@
 [![codecov](https://codecov.io/gh/phiyodr/bridge-inspection-toolkit/branch/master/graph/badge.svg?token=U685JTKNLC)](https://codecov.io/gh/phiyodr/bridge-inspection-toolkit)
 [![GitHub license](https://img.shields.io/github/license/phiyodr/bridge-inspection-toolkit.svg)](https://github.com/phiyodr/bridge-inspection-toolkit/blob/master/LICENSE) 
 [![GitHub tag](https://img.shields.io/github/tag/phiyodr/bridge-inspection-toolkit.svg)](https://GitHub.com/phiyodr/bridge-inspection-toolkit/tags/)
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 
 
