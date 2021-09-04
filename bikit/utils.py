@@ -18,17 +18,19 @@ with open(os.path.join(bikit_path, "data/datasets.json")) as f:
     DATASETS = json.load(f)
 
 DEMO_DATASETS = {"test_zip": {"description":  "",
-                 "download_name": "test_zip",
-                 "url" : "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_zip.zip",
-                 "original_name": "test_zip.zip",
-                 "checksum": "7a054857b3ff7ebc55c567047be97c1a",
-                 "size": "0.2 MB"},
+                    "download_name": "test_zip",
+                    "license": "",
+                    "urls" : ["https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_zip.zip"],
+                    "original_names": ["test_zip.zip"],
+                    "checksums": ["7a054857b3ff7ebc55c567047be97c1a"],
+                    "sizes": ["0.2 MB"]},
   "test_rar": {"description":  "",
-                 "download_name": "test_rar",
-                 "url" : "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_rar.rar",
-                 "original_name": "test_rar.rar",
-                 "checksum": "63b3722e69dcf7e14c879411c1907dae",
-                 "size": "3.7 MB"}}
+                    "download_name": "test_rar",
+                    "license": "",
+                    "urls" : ["https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_rar.rar"],
+                    "original_names": ["test_rar.rar"],
+                    "checksums": ["63b3722e69dcf7e14c879411c1907dae"],
+                    "sizes": ["3.7 MB"]}}
 
 
 
@@ -53,7 +55,7 @@ def list_datasets(verbose=True):
     return datasets
 
 
-def download_dataset(name, cache_dir='~/.bikit'):
+def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False):
     """
     Download dataset if not on cache folder.
 
@@ -79,53 +81,63 @@ def download_dataset(name, cache_dir='~/.bikit'):
     data_dict = datasets[name]
     download_name = data_dict["download_name"]
     cache_full_dir = os.path.join(cache_dir, download_name)
-    cache_zip = os.path.join(cache_full_dir, data_dict['original_name'])
-    url = data_dict['url']
-    size = data_dict['size']
-    file_type = data_dict['original_name'].split(".")[-1]
-    checksum = data_dict['checksum']
+    #cache_zip = os.path.join(cache_full_dir, data_dict['original_name'])
+    urls = data_dict['urls']
+    sizes = data_dict['sizes']
+    file_type = data_dict['original_names'][0].split(".")[-1]
+    checksums = data_dict['checksums']
+    names = data_dict['original_names']
 
     # Download if not available
     if not os.path.exists(cache_full_dir):
         print(f"Create folder {cache_full_dir}")
         os.makedirs(cache_full_dir)
         # Download
-        print(f"Start to download {size} of data")
-        urllib.request.urlretrieve(url, cache_zip, _schedule)
-        sleep(1)
-        print("\nDownload done!")
-        # Unzip/unrar
-        if file_type == "zip":
-            print("Start to unzip file")
-            with zipfile.ZipFile(cache_zip, 'r') as zip_ref:
-                zip_ref.extractall(cache_full_dir)
-            print("Unzip done!")
-        if file_type == "rar":
-            print("Start to unraring file")
-            try:
-                extract_archive(cache_zip, outdir=cache_full_dir)
-            except Exception as e:
-                print(e)
-                print("Have you installed rar? Try <apt install unrar>.")
-                raise
-            print("Unrar done!")
+
+        for idx, (url, name, checksum, size) in enumerate(zip(urls, names, checksums, sizes)):
+            print(f"Start to download file {idx+1} of {len(urls)} with {size}.")
+            cache_zip = os.path.join(cache_full_dir, name)
+            urllib.request.urlretrieve(url, filename=cache_zip, reporthook=_schedule)
+            sleep(1)
+
+            # Verify checksum
+            if checksum:
+                print("\nVerify checksum", end=" ")
+                calculated_checksum = _md5(cache_zip)
+                if calculated_checksum == checksum:
+                    print("- checksum correct")
+                else:
+                    print(calculated_checksum, checksum)
+                    print("- checksum wrong!")
+
+            # Unzip/unrar
+            if file_type == "zip":
+                print("\nStart to unzip file", end=" ")
+                with zipfile.ZipFile(cache_zip, 'r') as zip_ref:
+                    zip_ref.extractall(cache_full_dir)
+                print("- unzip done!")
+            elif file_type == "rar":
+                print("Start to unraring file", end=" ")
+                try:
+                    extract_archive(cache_zip, outdir=cache_full_dir)
+                except Exception as e:
+                    print("\n", e)
+                    print("\nHave you installed rar? Try <apt install unrar>.")
+                    raise
+                print("- unrar done!")
+
+            # Rm zip/rar file
+            if rm_zip_or_rar:
+                print(f"Removing {cache_zip}.")
+                os.remove(cache_zip)
     else:
         print(f"{cache_dir} and {cache_full_dir} already exists")
 
-    # Verify
-    print("Verify file")
-    if checksum:
-        calculated_checksum = _md5(cache_zip)
-        if calculated_checksum == checksum:
-            print("Checksum correct")
-        else:
-            print(calculated_checksum, checksum)
-    print("Done!")
 
 
 def _progressbar(cur, total=100):
     """Source: https://www.programmersought.com/article/14355722336/"""
-    percent = '{:.2%}'.format(cur / total)
+    percent = '{:.1%}'.format(cur / total)
     sys.stdout.write('\r')
     # sys.stdout.write("[%-50s] %s" % ('=' * int(math.floor(cur * 50 / total)),percent))
     sys.stdout.write("Download data [%-100s] %s" % ('=' * int(cur), percent))
@@ -160,7 +172,23 @@ def _md5(filename):
     return hash_md5.hexdigest()
 
 if __name__ == "__main__":
-    list_datasets(verbose=True)
-    #download_dataset(name='codebrim-classif', cache_dir='/home/philipp/.bikit')
-    download_dataset(name='mcds', cache_dir='~/.bikit')
+
+    #list_datasets(verbose=True)
+    download_dataset(name='codebrim-classif-balanced', rm_zip_or_rar=True)
+    #download_dataset(name='mcds_Bukhsh', cache_dir='~/.bikit')
+    #download_dataset(name='bcd', cache_dir='~/.bikit', rm_zip_or_rar=True)
+    print("===Download done===")
+    from bikit.datasets.mcds import McdsDataset
+    from torch.utils.data import DataLoader
+    from torchvision import transforms
+
+    my_transform = transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()])
+    trainval_dataset = McdsDataset(split="trainval", transform=my_transform)
+    trainval_loader = DataLoader(dataset=trainval_dataset, batch_size=64, shuffle=False, num_workers=0)
+
+    # Use it in your training loop
+    for i, (imgs, labels) in enumerate(trainval_loader):
+        print(i, imgs.shape, labels.shape)
+        if i > 5:
+            break
     print("===Done===")
