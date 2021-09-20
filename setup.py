@@ -1,8 +1,11 @@
 import setuptools
 
-with open("README.md", "r") as f:
-    long_description = f.read()
+with open("README.md", "r") as file:
+    long_description = file.read()
 
+with open('requirements.txt') as file:
+    required = file.read().splitlines()
+    
 setuptools.setup(
     name="bikit",
     version="0.1.2",
@@ -21,5 +24,6 @@ setuptools.setup(
     python_requires='>=3.6',
     package_data={
         # If any package contains *.txt or *.rst files, include them:
-        "": ["*.csv", "*.json"]
-    })
+        "": ["*.csv", "*.json"]},
+    install_requires=required
+    )
