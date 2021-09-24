@@ -2,7 +2,10 @@ language: python
 
 notifications:
   email: false
- 
+
+# Build on every branch push, tag push, and pull request change:
+on: [push, pull_request]
+
 jobs:
   include:
     - name: "Python 3.9 on Focal Linux"
