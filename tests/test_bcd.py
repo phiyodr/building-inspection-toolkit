@@ -19,16 +19,17 @@ if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/tra
     image_path = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
     makedirs(image_path)
     image_file = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
-    img_np = np.ones((379, 513, 3), dtype=np.int8) * 100
+    img_np = np.ones((224, 224, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
 
 def test_codebrim():
-    all_dataset = BcdDataset(split="", cache_dir="G:\Dropbox/Dropbox/Hiwi_KI/")
-    train_dataset = BcdDataset(split="train", cache_dir="G:\Dropbox/Dropbox/Hiwi_KI/")
-    val_dataset = BcdDataset(split="val", cache_dir="G:\Dropbox/Dropbox/Hiwi_KI/")
-    test_dataset = BcdDataset(split="test", cache_dir="G:\Dropbox/Dropbox/Hiwi_KI/")
-    development_dataset = BcdDataset(split="test", cache_dir="G:\Dropbox/Dropbox/Hiwi_KI/",  devel_mode=True)
+    all_dataset = BcdDataset(split="")
+    all_in_mem_dataset = BcdDataset(split="", load_all_in_mem=True)
+    train_dataset = BcdDataset(split="train")
+    val_dataset = BcdDataset(split="val")
+    test_dataset = BcdDataset(split="test")
+    development_dataset = BcdDataset(split="test", devel_mode=True)
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
@@ -37,9 +38,10 @@ def test_codebrim():
 
     # Dataset length
     assert len(all_dataset) == 6069
-    assert len(train_dataset) == 4256
+    assert len(all_in_mem_dataset) == 6069
+    assert len(train_dataset) == 4869
     assert len(val_dataset) == 600
-    assert len(test_dataset) == 1213
+    assert len(test_dataset) == 600
     assert len(development_dataset) == 100
 
 

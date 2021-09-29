@@ -18,7 +18,7 @@ class BcdDataset(Dataset):
     with open(Path(os.path.join(bikit_path, "data/datasets.json"))) as f:
         DATASETS = json.load(f)
 
-    def __init__(self, name="crack_detection", split=None, cache_dir=None, transform=None,
+    def __init__(self, name="bcd", split=None, cache_dir=None, transform=None,
                  load_all_in_mem=False, devel_mode=False):
         """
 
@@ -88,8 +88,8 @@ class BcdDataset(Dataset):
 
 if __name__ == "__main__":
     print(__file__)
-    train_dataset = BcdDataset(split="train", cache_dir="G:\Dropbox\Dropbox\Hiwi_KI/")
-    train_dataset = BcdDataset(split="", cache_dir="G:\Dropbox/Dropbox/Hiwi_KI/", load_all_in_mem=True)
+    train_dataset = BcdDataset(split="train")
+    train_dataset = BcdDataset(split="", load_all_in_mem=True)
     img, targets = train_dataset[0]
     print(img.shape, targets.shape)
     print(len(train_dataset))
