@@ -16,9 +16,9 @@ from bikit.datasets.bcd import BcdDataset
 home_path = Path(path.expanduser('~'))
 
 if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]:
-    image_path = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
+    image_path = home_path / ".bikit/bdc/"
     makedirs(image_path)
-    image_file = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
+    image_file = home_path / ".bikit/bcd/1.jpg"
     img_np = np.ones((224, 224, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
