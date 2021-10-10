@@ -17,7 +17,7 @@ home_path = Path(path.expanduser('~'))
 
 if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]:
     image_path = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
-    makedirs(image_path)
+    makedirs(image_path, exist_ok=True)
     image_file = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
     img_np = np.ones((379, 513, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
