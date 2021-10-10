@@ -25,7 +25,7 @@ if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/tra
 
 def test_codebrim():
     all_dataset = BcdDataset(split="")
-    all_in_mem_dataset = BcdDataset(split="", load_all_in_mem=True)
+    #all_in_mem_dataset = BcdDataset(split="", load_all_in_mem=True)
     train_dataset = BcdDataset(split="train")
     val_dataset = BcdDataset(split="val")
     test_dataset = BcdDataset(split="test")
