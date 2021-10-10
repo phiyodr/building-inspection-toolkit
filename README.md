@@ -21,7 +21,7 @@ Name      | Type        | Unique images | Implemented | Fix eval set
 ----------|-------------|---------------|-------------|-------------
 CDS       | Binary Clf  |            1k |     not yet | ukn
 SDNETv1   | Binary Clf  |           13k |     not yet | ukn
-BCD  [[Paper]](https://www.mdpi.com/2076-3417/9/14/2867)  [[Data]](https://github.com/tjdxxhy/crack-detection)   | Binary Clf  |            5k |     not yet | yes
+BCD  [[Paper]](https://www.mdpi.com/2076-3417/9/14/2867)  [[Data]](https://github.com/tjdxxhy/crack-detection)   | Binary Clf  |            6k |     yes | yes
 ICCD      | Binary Clf  |           60k |     not yet | ukn
 MCDS [[Paper]](https://www.researchgate.net/publication/332571358_Multi-classifier_for_Reinforced_Concrete_Bridge_Defects) [[Data]](https://zenodo.org/record/2601506)  | 10-Class Clf  | 3,617 | **yes** | no
 CODEBRIM [[Paper]](https://openaccess.thecvf.com/content_CVPR_2019/html/Mundt_Meta-Learning_Convolutional_Neural_Architectures_for_Multi-Target_Concrete_Defect_Classification_With_CVPR_2019_paper.html) [[Data]](https://zenodo.org/record/2620293#.YO8rj3UzZH4) | 6-Class Multi-target Clf  | 7261 | **yes** | yes
@@ -120,6 +120,21 @@ from bikit.utils import download_dataset
 from bikit.datasets.mcds import CodebrimDataset
 download_dataset("codebrim-classif-balanced") # Takes quite a time
 train_dataset = CodebrimDataset(split="train")
+```
+
+
+### `bridge-crack-detection`
+
+Bikit version of the bridge crack detection dataset.
+
+[More Details](/details/bcd.md)
+
+```python
+from bikit.utils import download_dataset
+from bikit.datasets.mcds import BcdDataset
+download_dataset("bcd") 
+train_dataset = BcdDataset(split="train", load_all_in_mem=True)
+test_dataset = BcdDataset(split="test")
 ```
 
 # PyTest
