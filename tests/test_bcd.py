@@ -16,7 +16,7 @@ from bikit.datasets.bcd import BcdDataset
 home_path = Path(path.expanduser('~'))
 
 if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]:
-    image_path = home_path / ".bikit/bdc/"
+    image_path = home_path / ".bikit/bcd/"
     makedirs(image_path)
     image_file = home_path / ".bikit/bcd/1.jpg"
     img_np = np.ones((224, 224, 3), dtype=np.int8) * 100
