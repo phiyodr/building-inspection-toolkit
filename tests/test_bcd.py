@@ -23,7 +23,7 @@ if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/tra
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
 
-def test_codebrim():
+def test_bcd():
     all_dataset = BcdDataset(split="")
     #all_in_mem_dataset = BcdDataset(split="", load_all_in_mem=True)
     train_dataset = BcdDataset(split="train")
@@ -38,7 +38,7 @@ def test_codebrim():
 
     # Dataset length
     assert len(all_dataset) == 6069
-    assert len(all_in_mem_dataset) == 6069
+    #assert len(all_in_mem_dataset) == 6069
     assert len(train_dataset) == 4869
     assert len(val_dataset) == 600
     assert len(test_dataset) == 600
@@ -46,4 +46,4 @@ def test_codebrim():
 
 
 if __name__ == '__main__':
-    test_codebrim()
+    test_bcd()
