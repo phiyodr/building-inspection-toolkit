@@ -3,6 +3,7 @@
 # Test Modules
 import sys
 import pytest
+from torchvision import transforms
 from os import path, makedirs
 import torch
 import numpy as np
@@ -29,6 +30,9 @@ def test_codebrim():
     val_dataset = CodebrimDataset(split="val")
     test_dataset = CodebrimDataset(split="test")
     development_dataset = CodebrimDataset(split="test", devel_mode=True)
+    cache_dir = CodebrimDataset(split="", devel_mode=True, cache_dir=".bikit/codebrim-classif-balanced")
+    transform = CodebrimDataset(split="", devel_mode=True, transform=transforms.ToTensor())
+    load_all_in_mem = CodebrimDataset(split="", load_all_in_mem=True, devel_mode=True)
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
@@ -41,6 +45,9 @@ def test_codebrim():
     assert len(val_dataset) == 616
     assert len(test_dataset) == 632
     assert len(development_dataset) == 100
+    assert len(cache_dir) == 100
+    assert len(transform) == 100
+    assert len(load_all_in_mem) == 100
 
 
 if __name__ == '__main__':

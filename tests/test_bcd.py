@@ -3,6 +3,7 @@
 # Test Modules
 import sys
 import pytest
+from torchvision import transforms
 from os import path, makedirs
 import torch
 import numpy as np
@@ -26,10 +27,13 @@ if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/tra
 def test_bcd():
     all_dataset = BcdDataset(split="")
     #all_in_mem_dataset = BcdDataset(split="", load_all_in_mem=True)
+    cache_dir = BcdDataset(split="", devel_mode=True, cache_dir=".bikit/bcd/")
+    transform = BcdDataset(split="", devel_mode=True, transform=transforms.ToTensor())
     train_dataset = BcdDataset(split="train")
     val_dataset = BcdDataset(split="val")
     test_dataset = BcdDataset(split="test")
     development_dataset = BcdDataset(split="test", devel_mode=True)
+    load_all_in_mem = BcdDataset(split="", load_all_in_mem=True, devel_mode=True)
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
@@ -43,6 +47,9 @@ def test_bcd():
     assert len(val_dataset) == 600
     assert len(test_dataset) == 600
     assert len(development_dataset) == 100
+    assert len(cache_dir) == 100
+    assert len(transform) == 100
+    assert len(load_all_in_mem) == 100
 
 
 if __name__ == '__main__':

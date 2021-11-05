@@ -8,6 +8,7 @@ import torch
 import numpy as np
 from PIL import Image
 from pathlib import Path
+from torchvision import transforms
 
 # Import module under test
 #sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
@@ -27,6 +28,9 @@ def test_mcds_bukhsh():
     trainval_dataset = McdsDataset(name="mcds_Bukhsh", split="trainval")
     test_dataset = McdsDataset(name="mcds_Bukhsh", split="test")
     development_dataset = McdsDataset(name="mcds_Bukhsh", split="test", devel_mode=True)
+    cache_dir = McdsDataset(name="mcds_Bukhsh", split="", devel_mode=True, cache_dir=".bikit/mcds")
+    transform = McdsDataset(name="mcds_Bukhsh", split="", devel_mode=True, transform=transforms.ToTensor())
+    #all_in_mem = McdsDataset(name="mcds_Bukhsh", split="", load_all_in_mem=True, devel_mode=True)
 
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
@@ -39,12 +43,18 @@ def test_mcds_bukhsh():
     assert len(trainval_dataset) == 2114
     assert len(test_dataset) == 498
     assert len(development_dataset) == 100
+    assert len(cache_dir) == 100
+    assert len(transform) == 100
+    #assert len(all_in_mem) == 100
 
 def test_mcds_bikit():
     all_dataset = McdsDataset(split="")
     trainval_dataset = McdsDataset(split="trainval")
     test_dataset = McdsDataset(split="test")
     development_dataset = McdsDataset(split="test", devel_mode=True)
+    cache_dir = McdsDataset(split="", devel_mode=True, cache_dir=".bikit/mcds")
+    transform = McdsDataset(split="", devel_mode=True, transform=transforms.ToTensor())
+    #all_in_mem = McdsDataset(split="", load_all_in_mem=True, devel_mode=True)
 
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
@@ -57,6 +67,9 @@ def test_mcds_bikit():
     assert len(trainval_dataset) == 2147
     assert len(test_dataset) == 450
     assert len(development_dataset) == 100
+    assert len(cache_dir) == 100
+    assert len(transform) == 100
+    #assert len(all_in_mem) == 100
 
 def test_mcds_catch():
     with pytest.raises(Exception):
@@ -64,4 +77,6 @@ def test_mcds_catch():
         d = McdsDataset(name="WRONG_NAME")
 
 if __name__ == '__main__':
-    test_mcds()
+    test_mcds_bikit()
+    test_mcds_bukhsh()
+    test_mcds_catch()

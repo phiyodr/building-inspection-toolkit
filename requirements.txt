@@ -7,3 +7,5 @@ Pillow
 patool
 pathlib
 tqdm
+seaborn
+matplotlib
