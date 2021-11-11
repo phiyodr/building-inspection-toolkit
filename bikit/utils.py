@@ -203,7 +203,8 @@ def codebrim_gdrive_download(total_size, download_id="", full_cache_dir=""):
     # download the Zip file
     session = requests.Session()
     response = session.get(url, params={'id': download_id}, stream=True)
-    token = get_confirm_token(response)
+    #token = get_confirm_token(response)
+    token = None
 
     if token:
         params = {'id': download_id, 'confirm': token}
@@ -212,8 +213,9 @@ def codebrim_gdrive_download(total_size, download_id="", full_cache_dir=""):
         save_response_content(response=response, destination=full_cache_dir, totalsize=total_size)
         print(f"{full_cache_dir} is done")
     else:
-        print("There was an Error while getting the download token!"
-              " This may occur when trying to download to often in a short time period.")
+        raise Exception("There was an Error while getting the download token!"
+                        " This may occur when trying to download to often in a short time period."
+                        " Please try again later!")
 
 
 def get_confirm_token(response):
@@ -241,9 +243,9 @@ def save_response_content(response, destination, totalsize):
 if __name__ == "__main__":
 
     # list_datasets(verbose=True)
-    # download_dataset(name='codebrim-classif-balanced', rm_zip_or_rar=True, force_redownload=True)
+    download_dataset(name='codebrim-classif-balanced', rm_zip_or_rar=True, force_redownload=True)
     # download_dataset(name='mcds_Bukhsh', cache_dir='~/.bikit', rm_zip_or_rar=True)
-    download_dataset(name='bcd', cache_dir='~/.bikit', rm_zip_or_rar=True)
+    #download_dataset(name='bcd', cache_dir='~/.bikit', rm_zip_or_rar=True)
     print("===Download done===")
     from bikit.datasets.mcds import McdsDataset
     from torch.utils.data import DataLoader
