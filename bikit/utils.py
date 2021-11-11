@@ -203,8 +203,8 @@ def codebrim_gdrive_download(total_size, download_id="", full_cache_dir=""):
     # download the Zip file
     session = requests.Session()
     response = session.get(url, params={'id': download_id}, stream=True)
-    #token = get_confirm_token(response)
-    token = None
+    token = get_confirm_token(response)
+
 
     if token:
         params = {'id': download_id, 'confirm': token}
