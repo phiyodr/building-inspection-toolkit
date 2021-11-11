@@ -33,7 +33,7 @@ class McdsDataset(Dataset):
         """
         assert name in list(self.DATASETS.keys()), f"This name does not exists. Use something from {list(DATASETS.keys())}."
         self.name = name
-        assert split in ["", "trainval", "test"], f'You used split str({split}). Only ["", "trainval", "test"] are allowed.'
+        #assert split in ["", "trainval", "test"], f'You used split str({split}). Only ["", "trainval", "test"] are allowed.'
         bikit_path = Path(dirname(dirname(__file__)))
         self.csv_filename = Path(os.path.join(bikit_path, "data", self.name) + ".csv")
 
