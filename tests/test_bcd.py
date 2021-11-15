@@ -35,7 +35,6 @@ def test_bcd_basic():
     val_dataset = BcdDataset(split="val")
     test_dataset = BcdDataset(split="test")
     development_dataset = BcdDataset(split="test", devel_mode=True)
-    load_all_in_mem_devmode = BcdDataset(split="", load_all_in_mem=True, devel_mode=True)
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
@@ -49,7 +48,6 @@ def test_bcd_basic():
     assert len(test_dataset) == 600
     assert len(development_dataset) == 100
     assert len(cache_dir_dataset) == 6069
-    assert len(load_all_in_mem_devmode) == 100
     assert len(transform_dataset) == 6069
 
 @pytest.mark.skipif(home_path in travis_homes,
