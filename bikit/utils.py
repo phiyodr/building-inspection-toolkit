@@ -1,3 +1,4 @@
+import shutil
 import urllib.request
 import os
 import hashlib
@@ -9,6 +10,7 @@ from os.path import dirname
 from PIL import Image
 from patoolib import extract_archive
 from time import sleep
+import requests
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -17,21 +19,22 @@ bikit_path = dirname(__file__)
 with open(os.path.join(bikit_path, "data/datasets.json")) as f:
     DATASETS = json.load(f)
 
-DEMO_DATASETS = {"test_zip": {"description":  "",
-                    "download_name": "test_zip",
-                    "license": "",
-                    "urls" : ["https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_zip.zip"],
-                    "original_names": ["test_zip.zip"],
-                    "checksums": ["7a054857b3ff7ebc55c567047be97c1a"],
-                    "sizes": ["0.2 MB"]},
-  "test_rar": {"description":  "",
-                    "download_name": "test_rar",
-                    "license": "",
-                    "urls" : ["https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_rar.rar"],
-                    "original_names": ["test_rar.rar"],
-                    "checksums": ["63b3722e69dcf7e14c879411c1907dae"],
-                    "sizes": ["3.7 MB"]}}
-
+DEMO_DATASETS = {"test_zip": {"description": "",
+                              "download_name": "test_zip",
+                              "license": "",
+                              "urls": [
+                                  "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_zip.zip"],
+                              "original_names": ["test_zip.zip"],
+                              "checksums": ["7a054857b3ff7ebc55c567047be97c1a"],
+                              "sizes": ["0.2 MB"]},
+                 "test_rar": {"description": "",
+                              "download_name": "test_rar",
+                              "license": "",
+                              "urls": [
+                                  "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_rar.rar"],
+                              "original_names": ["test_rar.rar"],
+                              "checksums": ["63b3722e69dcf7e14c879411c1907dae"],
+                              "sizes": ["3.7 MB"]}}
 
 
 def pil_loader(path):
@@ -55,7 +58,7 @@ def list_datasets(verbose=True):
     return datasets
 
 
-def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False):
+def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redownload=False):
     """
     Download dataset if not on cache folder.
 
@@ -68,9 +71,12 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False):
         print(datasets[name])
     else:
         datasets = DATASETS
-        assert name in list(datasets.keys()), f"Please specify a valid <name> out of {list(datasets.keys())}. You used {name}."
-    # Check if cache exist
+        assert name in list(
+            datasets.keys()), f"Please specify a valid <name> out of {list(datasets.keys())}. You used {name}."
+
     cache_dir = os.path.expanduser(cache_dir)
+
+    # Check if cache exist
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
         print(f"Create cache {cache_dir}")
@@ -80,8 +86,18 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False):
     # Set defaults
     data_dict = datasets[name]
     download_name = data_dict["download_name"]
-    cache_full_dir = os.path.join(cache_dir, download_name)
-    #cache_zip = os.path.join(cache_full_dir, data_dict['original_name'])
+    if name == "codebrim-classif-balanced":
+        cache_full_dir = os.path.join(cache_dir, download_name, "classification_dataset_balanced")
+    else:
+        cache_full_dir = os.path.join(cache_dir, download_name)
+
+    # remove old Data for a clean new Download
+    if force_redownload:
+        if os.path.exists(cache_full_dir):
+            shutil.rmtree(cache_full_dir)
+            print(f"The Folder {cache_full_dir} has been removed.")
+
+    # cache_zip = os.path.join(cache_full_dir, data_dict['original_name'])
     urls = data_dict['urls']
     sizes = data_dict['sizes']
     file_type = data_dict['original_names'][0].split(".")[-1]
@@ -94,10 +110,13 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False):
         os.makedirs(cache_full_dir)
         # Download
 
-        for idx, (url, name, checksum, size) in enumerate(zip(urls, names, checksums, sizes)):
-            print(f"Start to download file {idx+1} of {len(urls)} with {size}.")
-            cache_zip = os.path.join(cache_full_dir, name)
-            urllib.request.urlretrieve(url, filename=cache_zip, reporthook=_schedule)
+        for idx, (url, file_name, checksum, size) in enumerate(zip(urls, names, checksums, sizes)):
+            print(f"Start to download file {idx + 1} of {len(urls)} with {size}.")
+            cache_zip = os.path.join(cache_full_dir, file_name)
+            if name == "codebrim-classif-balanced":
+                codebrim_gdrive_download(total_size=size, download_id=url, full_cache_dir=cache_zip)
+            else:
+                urllib.request.urlretrieve(url, filename=cache_zip, reporthook=_schedule)
             sleep(1)
 
             # Verify checksum
@@ -134,7 +153,6 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False):
         print(f"{cache_dir} and {cache_full_dir} already exists")
 
 
-
 def _progressbar(cur, total=100):
     """Source: https://www.programmersought.com/article/14355722336/"""
     percent = '{:.1%}'.format(cur / total)
@@ -159,7 +177,7 @@ def _schedule(blocknum, blocksize, totalsize):
     if percent > 1.0:
         percent = 1.0
     percent = percent * 100
-    #print("download : %.2f%%" %(percent))
+    # print("download : %.2f%%" %(percent))
     _progressbar(percent)
 
 
@@ -171,11 +189,62 @@ def _md5(filename):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
+
+def codebrim_gdrive_download(total_size, download_id="", full_cache_dir=""):
+    """
+    Download the codebrim_classif_dataset
+    :param total_size: file size of the zipfile from the json file
+    :param download_id: list of gdrive ids to download
+    :param full_cache_dir: Cache directory
+    """
+
+    url = "https://docs.google.com/uc?export=download"
+
+    # download the Zip file
+    session = requests.Session()
+    response = session.get(url, params={'id': download_id}, stream=True)
+    token = get_confirm_token(response)
+
+
+    if token:
+        params = {'id': download_id, 'confirm': token}
+        response = session.get(url, params=params, stream=True)
+
+        save_response_content(response=response, destination=full_cache_dir, totalsize=total_size)
+        print(f"{full_cache_dir} is done")
+    else:
+        raise Exception("There was an Error while getting the download token!"
+                        " This may occur when trying to download to often in a short time period."
+                        " Please try again later!")
+
+
+def get_confirm_token(response):
+    for key, value in response.cookies.items():
+        if key.startswith('download_warning'):
+            return value
+
+
+def save_response_content(response, destination, totalsize):
+    chunk_size = 32768
+    counter = 0
+    print_counter = 0
+
+    with open(destination, "wb") as f:
+        for chunk in response.iter_content(chunk_size):
+            if chunk:
+                f.write(chunk)
+                counter += 1
+                print_counter += 1
+                filesize = float(totalsize.split(" ")[0]) * 1073741824
+                _schedule(blocknum=counter, blocksize=chunk_size, totalsize=filesize)
+    sys.stdout.write(f"\n{round((chunk_size * counter) / 1073741824, 2)}GB Downloaded. Download finished.\n", )
+
+
 if __name__ == "__main__":
 
-    #list_datasets(verbose=True)
-    download_dataset(name='codebrim-classif-balanced', rm_zip_or_rar=True)
-    #download_dataset(name='mcds_Bukhsh', cache_dir='~/.bikit')
+    # list_datasets(verbose=True)
+    download_dataset(name='codebrim-classif-balanced', rm_zip_or_rar=True, force_redownload=True)
+    # download_dataset(name='mcds_Bukhsh', cache_dir='~/.bikit', rm_zip_or_rar=True)
     #download_dataset(name='bcd', cache_dir='~/.bikit', rm_zip_or_rar=True)
     print("===Download done===")
     from bikit.datasets.mcds import McdsDataset
