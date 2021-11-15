@@ -7,5 +7,3 @@ Pillow
 patool
 pathlib
 tqdm
-request
-shutil
