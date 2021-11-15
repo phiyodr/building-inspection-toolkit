@@ -15,8 +15,9 @@ from pathlib import Path
 from bikit.datasets.codebrim import CodebrimDataset
 
 home_path = Path(path.expanduser('~'))
+travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
 
-if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]:
+if home_path in travis_homes:
     image_path = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
     Path(image_path).mkdir(parents=True, exist_ok=True)
     image_file = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
@@ -25,7 +26,7 @@ if home_path in [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/tra
     img_pil.save(image_file)
 
 
-def test_codebrim():
+def test_codebrim_basic():
     all_dataset = CodebrimDataset(split="")
     train_dataset = CodebrimDataset(split="train")
     val_dataset = CodebrimDataset(split="val")
@@ -35,7 +36,6 @@ def test_codebrim():
     transform_dataset = CodebrimDataset(split="",
                                         transform=transforms.Compose(
                                             [transforms.Resize((256, 256)), transforms.ToTensor()]))
-    # load_all_in_mem = CodebrimDataset(split="", load_all_in_mem=True)
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
@@ -50,8 +50,18 @@ def test_codebrim():
     assert len(development_dataset) == 100
     assert len(cache_dir_dataset) == 7261
     assert len(transform_dataset) == 7261
-    # assert len(load_all_in_mem) == 100
 
+
+@pytest.mark.skipif(home_path in travis_homes,
+                    reason="Long-running test with real datasets for local use only, not on Travis.")
+def test_codebrim_local():
+    # all_in_mem Test requires at least 8GB of free RAM to work
+    # all_in_mem = CodebrimDataset(split="", load_all_in_mem=True)
+    all_in_mem_develmode = CodebrimDataset(split="", load_all_in_mem=True, devel_mode=True)
+
+    # assert len(all_in_mem) == 7261
+    assert len(all_in_mem_develmode) == 100
 
 if __name__ == '__main__':
-    test_codebrim()
+    test_codebrim_local()
+    test_codebrim_basic()
