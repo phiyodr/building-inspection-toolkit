@@ -11,6 +11,7 @@ from PIL import Image
 from patoolib import extract_archive
 from time import sleep
 import requests
+import ssl
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -23,7 +24,7 @@ DEMO_DATASETS = {"test_zip": {"description": "",
                               "download_name": "test_zip",
                               "license": "",
                               "urls": [
-                                  "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_zip.zip"],
+                                  "https://github.com/SeTruphe/bridge-inspection-toolkit-old-version/raw/master/bikit/data/test_zip.zip"],
                               "original_names": ["test_zip.zip"],
                               "checksums": ["7a054857b3ff7ebc55c567047be97c1a"],
                               "sizes": ["0.2 MB"]},
@@ -31,7 +32,7 @@ DEMO_DATASETS = {"test_zip": {"description": "",
                               "download_name": "test_rar",
                               "license": "",
                               "urls": [
-                                  "https://github.com/phiyodr/bridge-inspection-toolkit/raw/master/bikit/data/test_rar.rar"],
+                                  "https://github.com/SeTruphe/bridge-inspection-toolkit-old-version/raw/master/bikit/data/test_zip.zip"],
                               "original_names": ["test_rar.rar"],
                               "checksums": ["63b3722e69dcf7e14c879411c1907dae"],
                               "sizes": ["3.7 MB"]}}
@@ -116,6 +117,8 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redo
             if name == "codebrim-classif-balanced":
                 codebrim_gdrive_download(total_size=size, download_id=url, full_cache_dir=cache_zip)
             else:
+                if name == "sdnet":
+                    ssl._create_default_https_context = ssl._create_unverified_context
                 urllib.request.urlretrieve(url, filename=cache_zip, reporthook=_schedule)
             sleep(1)
 
@@ -243,9 +246,12 @@ def save_response_content(response, destination, totalsize):
 if __name__ == "__main__":
 
     # list_datasets(verbose=True)
-    download_dataset(name='codebrim-classif-balanced', rm_zip_or_rar=True, force_redownload=True)
+    #download_dataset(name='codebrim-classif-balanced', rm_zip_or_rar=True, force_redownload=True)
+    download_dataset(name='cds', rm_zip_or_rar=True, force_redownload=True)
+    #download_dataset(name='sdnet', rm_zip_or_rar=True, force_redownload=True)
     # download_dataset(name='mcds_Bukhsh', cache_dir='~/.bikit', rm_zip_or_rar=True)
-    #download_dataset(name='bcd', cache_dir='~/.bikit', rm_zip_or_rar=True)
+    download_dataset(name='bcd', cache_dir='~/.bikit', rm_zip_or_rar=True)
+    #download_dataset(name="test_zip", force_redownload=True)
     print("===Download done===")
     from bikit.datasets.mcds import McdsDataset
     from torch.utils.data import DataLoader

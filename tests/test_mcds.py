@@ -9,6 +9,7 @@ import numpy as np
 from PIL import Image
 from pathlib import Path
 from torchvision import transforms
+import os
 
 # Import module under test
 # sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
@@ -31,7 +32,6 @@ def test_mcds_bukhsh_basic():
     trainval_dataset = McdsDataset(name="mcds_Bukhsh", split="trainval")
     test_dataset = McdsDataset(name="mcds_Bukhsh", split="test")
     development_dataset = McdsDataset(name="mcds_Bukhsh", split="test", devel_mode=True)
-    cache_dir_dataset = McdsDataset(name="mcds_Bukhsh", split="", devel_mode=True, cache_dir=".bikit/mcds")
     transform_dataset = McdsDataset(name="mcds_Bukhsh", split="", devel_mode=True,
                                     transform=transforms.Compose(
                                         [transforms.Resize((256, 256)), transforms.ToTensor()]))
@@ -47,7 +47,6 @@ def test_mcds_bukhsh_basic():
     assert len(trainval_dataset) == 2114
     assert len(test_dataset) == 498
     assert len(development_dataset) == 100
-    assert len(cache_dir_dataset) == 100
     assert len(transform_dataset) == 100
 
 
@@ -60,6 +59,11 @@ def test_mcds_bukhsh_local():
     assert len(all_in_mem) == 2612
     assert len(all_in_mem_develmode) == 100
 
+    #Test correct cache_dir func
+    cache_test = McdsDataset(name="mcds_Bukhsh", split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    img, targets = cache_test[0]
+    assert list(targets.shape) == [10]
+
 
 def test_mcds_bikit_basic():
     all_dataset = McdsDataset(split="")
@@ -67,7 +71,6 @@ def test_mcds_bikit_basic():
     valid_dataset = McdsDataset(split="valid")
     test_dataset = McdsDataset(split="test")
     development_dataset = McdsDataset(split="test", devel_mode=True)
-    cache_dir_dataset = McdsDataset(split="", cache_dir=".bikit/mcds")
     transform_dataset = McdsDataset(split="",
                                     transform=transforms.Compose(
                                         [transforms.Resize((256, 256)), transforms.ToTensor()]))
@@ -84,7 +87,6 @@ def test_mcds_bikit_basic():
     assert len(valid_dataset) == 270
     assert len(test_dataset) == 270
     assert len(development_dataset) == 100
-    assert len(cache_dir_dataset) == 2597
     assert len(transform_dataset) == 2597
 
 
@@ -96,6 +98,11 @@ def test_mcds_bikit_local():
 
     assert len(all_in_mem_develmode) == 100
     assert len(all_in_mem) == 2597
+
+    #Test correct cache_dir func
+    cache_test = McdsDataset(split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    img, targets = cache_test[0]
+    assert list(targets.shape) == [8]
 
 
 def test_mcds_catch():

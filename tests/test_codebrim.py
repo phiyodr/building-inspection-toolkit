@@ -9,6 +9,7 @@ import torch
 import numpy as np
 from PIL import Image
 from pathlib import Path
+import os
 
 # Import module under test
 # sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
@@ -32,7 +33,6 @@ def test_codebrim_basic():
     val_dataset = CodebrimDataset(split="val")
     test_dataset = CodebrimDataset(split="test")
     development_dataset = CodebrimDataset(split="test", devel_mode=True)
-    cache_dir_dataset = CodebrimDataset(split="", cache_dir=".bikit/codebrim-classif-balanced")
     transform_dataset = CodebrimDataset(split="",
                                         transform=transforms.Compose(
                                             [transforms.Resize((256, 256)), transforms.ToTensor()]))
@@ -48,16 +48,21 @@ def test_codebrim_basic():
     assert len(val_dataset) == 616
     assert len(test_dataset) == 632
     assert len(development_dataset) == 100
-    assert len(cache_dir_dataset) == 7261
     assert len(transform_dataset) == 7261
 
 
 @pytest.mark.skipif(home_path in travis_homes,
                     reason="Long-running test with real datasets for local use only, not on Travis.")
 def test_codebrim_local():
-    # all_in_mem Test requires at least 8GB of free RAM to work
+
+    # all_in_mem Test requires at least 10GB of free RAM to work
     # all_in_mem = CodebrimDataset(split="", load_all_in_mem=True)
     all_in_mem_develmode = CodebrimDataset(split="", load_all_in_mem=True, devel_mode=True)
+
+    #Test correct cache_dir func
+    cache_test = CodebrimDataset(split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    img, targets = cache_test[0]
+    assert list(targets.shape) == [6]
 
     # assert len(all_in_mem) == 7261
     assert len(all_in_mem_develmode) == 100
