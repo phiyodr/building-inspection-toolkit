@@ -23,7 +23,7 @@ class BcdDataset(Dataset):
         """
 
         :param name: Dataset name.
-        :param split: Use 'train', 'valid' or 'test.
+        :param split: Use 'train', 'val' or 'test.
         :param transform: Torch transformation for image data (this depends on your CNN).
         :param cache_dir: Path to cache_dir.
         :param load_all_in_mem: Whether or not to load all image data into memory (this depends on the dataset size and
@@ -37,13 +37,13 @@ class BcdDataset(Dataset):
         # Misc
         self.split = split
         if cache_dir:
-            self.cache_full_dir = Path(os.path.join(cache_dir, name))
+            self.cache_full_dir = Path(os.path.join(cache_dir))
         else:
-            self.cache_full_dir = Path(os.path.join(os.path.expanduser("~"), ".bikit", name))
+            self.cache_full_dir = Path(os.path.join(os.path.expanduser("~"), ".bikit"))
 
         self.devel_mode = devel_mode
-        self.class_names = ["Cracks"]
-        self.num_classes = 1
+        self.class_names = self.DATASETS[name]["class_names"]
+        self.num_classes = self.DATASETS[name]["num_classes"]
         self.load_all_in_mem = load_all_in_mem
 
         # Data prep
@@ -89,7 +89,7 @@ class BcdDataset(Dataset):
 if __name__ == "__main__":
     print(__file__)
     train_dataset = BcdDataset(split="train")
-    train_dataset = BcdDataset(split="", load_all_in_mem=True)
+    #train_dataset = BcdDataset(split="", load_all_in_mem=True)
     img, targets = train_dataset[0]
     print(img.shape, targets.shape)
     print(len(train_dataset))

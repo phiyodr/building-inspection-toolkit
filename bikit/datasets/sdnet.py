@@ -10,28 +10,26 @@ from bikit.utils import pil_loader, DATASETS
 from pathlib import Path
 from tqdm import tqdm
 
-class CodebrimDataset(Dataset):
-    """PyTorch Dataset for CODEBRIM Balanced. Multiclass-multilabel dataset with 6 classes.
-    Dataset for Version 'CODEBRIM_classification_balanced_dataset.zip' from
-    https://zenodo.org/record/2620293#.YILofIMzYUE."""
+
+class SdnetDataset(Dataset):
+    """PyTorch Dataset for BCD"""
     bikit_path = Path(dirname(dirname(__file__)))
 
     with open(Path(os.path.join(bikit_path, "data/datasets.json"))) as f:
         DATASETS = json.load(f)
 
-    def __init__(self, name="codebrim-classif-balanced", split=None, cache_dir=None, transform=None,
+    def __init__(self, name="sdnet", split=None, cache_dir=None, transform=None,
                  load_all_in_mem=False, devel_mode=False):
         """
 
         :param name: Dataset name.
-        :param split: Use 'train', 'valid' or 'test.
+        :param split: Use 'train', 'val' or 'test.
         :param transform: Torch transformation for image data (this depends on your CNN).
         :param cache_dir: Path to cache_dir.
         :param load_all_in_mem: Whether or not to load all image data into memory (this depends on the dataset size and
             your memory). Loading all in memory can speed up your training.
         :param devel_mode:
         """
-
         assert name in list(self.DATASETS.keys()), f"This name does not exists. Use something from {list(DATASETS.keys())}."
         bikit_path = Path(dirname(dirname(__file__)))
         self.csv_filename = Path(os.path.join(bikit_path, "data", name) + ".csv")
@@ -39,7 +37,7 @@ class CodebrimDataset(Dataset):
         # Misc
         self.split = split
         if cache_dir:
-            self.cache_full_dir = Path(os.path.join(cache_dir))
+            self.cache_full_dir = Path(cache_dir)
         else:
             self.cache_full_dir = Path(os.path.join(os.path.expanduser("~"), ".bikit"))
 
@@ -81,7 +79,7 @@ class CodebrimDataset(Dataset):
         else:
             img = transforms.ToTensor()(img)
 
-        # Get label with shape (6,)
+        # Get label with shape (1,)
         label = torch.FloatTensor(data[self.class_names].to_numpy().astype("float32"))
         return img, label
 
@@ -90,8 +88,8 @@ class CodebrimDataset(Dataset):
 
 if __name__ == "__main__":
     print(__file__)
-    train_dataset = CodebrimDataset(split="")
-    #train_dataset = CodebrimDataset(split="", load_all_in_mem=True)
+    train_dataset = SdnetDataset(split="train")
+    #train_dataset = SdnetDataset(split="", load_all_in_mem=True)
     img, targets = train_dataset[0]
     print(img.shape, targets.shape)
     print(len(train_dataset))

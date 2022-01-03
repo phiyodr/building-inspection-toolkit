@@ -66,7 +66,6 @@ class McdsDataset(Dataset):
         """Returns image as torch.Tensor and label as torch.Tensor with dimension (bs, num_classes)
         where 1 indicates that the label is present."""
         data = self.df.iloc[index]
-
         # Load and transform image
         img_filename = Path(os.path.join(self.cache_full_dir, data['img_path']))
         img = pil_loader(img_filename)
@@ -77,6 +76,8 @@ class McdsDataset(Dataset):
 
         # Get label with shape 10 or 8
         label = torch.FloatTensor(data[self.class_names].to_numpy().astype("float32"))
+        print("LALALALALABEL")
+        print(label)
         return img, label
 
     def __len__(self):
