@@ -19,10 +19,10 @@ home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
 
 if home_path in travis_homes:
-    image_path = home_path / ".bikit/bcd/"
+    image_path = home_path / ".bikit/sdnet/D/CD/"
     makedirs(image_path)
-    image_file = home_path / ".bikit/bcd/1.jpg"
-    img_np = np.ones((224, 224, 3), dtype=np.int8) * 100
+    image_file = home_path / ".bikit/sdnet/D/CD/7001-115.jpg"
+    img_np = np.ones((256, 256, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
 
@@ -30,7 +30,7 @@ if home_path in travis_homes:
 def test_sdnet_basic():
     all_dataset = SdnetDataset(split="")
     transform_dataset = SdnetDataset(split="",
-                                  transform=transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()]))
+        transform=transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()]))
     train_dataset = SdnetDataset(split="train")
     val_dataset = SdnetDataset(split="val")
     test_dataset = SdnetDataset(split="test")
