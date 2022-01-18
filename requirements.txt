@@ -7,3 +7,4 @@ Pillow
 patool
 pathlib
 tqdm
+cv2
