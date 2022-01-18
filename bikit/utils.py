@@ -12,6 +12,7 @@ from patoolib import extract_archive
 from time import sleep
 import requests
 import ssl
+import cv2
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -45,6 +46,10 @@ def pil_loader(path):
         img = Image.open(f)
         return img.convert('RGB')
 
+def cv2_loader(path):
+    """Outputs an numpy.ndarray object"""
+    # Can only use str not pathlib.PosixPath
+    return cv2.cvtColor(cv2.imread(str(path)), cv2.COLOR_BGR2RGB)
 
 def list_datasets(verbose=True):
     """

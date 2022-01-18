@@ -14,6 +14,7 @@ import os
 # Import module under test
 # sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from bikit.datasets.sdnet import SdnetDataset
+from bikit.datasets.data import BikitDataset
 
 home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
@@ -28,13 +29,13 @@ if home_path in travis_homes:
 
 
 def test_sdnet_basic():
-    all_dataset = SdnetDataset(split="")
-    transform_dataset = SdnetDataset(split="",
+    all_dataset = BikitDataset(name="sdnet", split="")
+    transform_dataset = BikitDataset(name="sdnet", split="",
         transform=transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()]))
-    train_dataset = SdnetDataset(split="train")
-    val_dataset = SdnetDataset(split="val")
-    test_dataset = SdnetDataset(split="test")
-    development_dataset = SdnetDataset(split="test", devel_mode=True)
+    train_dataset = BikitDataset(name="sdnet", split="train")
+    val_dataset = BikitDataset(name="sdnet", split="val")
+    test_dataset = BikitDataset(name="sdnet", split="test")
+    development_dataset = BikitDataset(name="sdnet", split="test", devel_mode=True)
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
@@ -54,15 +55,15 @@ def test_sdnet_basic():
 def test_sdnet_local():
 
     # This test requieres at least 15GB of free RAM to work!
-    #all_in_mem_dataset = SdnetDataset(split="", load_all_in_mem=True)
-    all_in_mem_develmode = SdnetDataset(split="", load_all_in_mem=True, devel_mode=True)
+    #all_in_mem_dataset = BikitDataset(name="sdnet", split="", load_all_in_mem=True)
+    all_in_mem_develmode = BikitDataset(name="sdnet", split="", load_all_in_mem=True, devel_mode=True)
 
 
     #assert len(all_in_mem_dataset) == 56092
     assert len(all_in_mem_develmode) == 100
 
     #Test correct cache_dir func
-    cache_test = SdnetDataset(split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name="sdnet", split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [6]
 

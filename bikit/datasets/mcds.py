@@ -76,8 +76,6 @@ class McdsDataset(Dataset):
 
         # Get label with shape 10 or 8
         label = torch.FloatTensor(data[self.class_names].to_numpy().astype("float32"))
-        print("LALALALALABEL")
-        print(label)
         return img, label
 
     def __len__(self):
