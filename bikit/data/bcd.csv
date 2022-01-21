@@ -1,4 +1,4 @@
-img_name,img_path,Crack,NoCrack,split_bikit
+img_name,img_path,Crack,NoCrack,split_type
 1.jpg,bcd/1.jpg,0,1,train
 2.jpg,bcd/2.jpg,0,1,train
 3.jpg,bcd/3.jpg,0,1,train

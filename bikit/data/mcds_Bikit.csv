@@ -1,4 +1,4 @@
-img_name,img_path,Cracks,Efflorescence,ExposedReinforcement,General,NoDefect,RustStaining,Scaling,Spalling,CLASSES,isStatusChanged,split_bikit
+img_name,img_path,Crack,Efflorescence,ExposedReinforcement,General,NoDefect,RustStaining,Scaling,Spalling,CLASSES,isStatusChanged,split_bikit
 001_0fwtaowy.t1o.jpg,mcds/Corrosion/no rust staining/001_0fwtaowy.t1o.jpg,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,Cracks,False,valid
 001_1tionnxn.hgr.jpg,mcds/MultiClassifier/cracks/001_1tionnxn.hgr.jpg,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,Cracks,False,valid
 001_avlr5wdk.yoi.jpg,mcds/MultiClassifier/cracks/001_avlr5wdk.yoi.jpg,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,Cracks,False,valid
