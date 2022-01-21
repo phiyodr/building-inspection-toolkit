@@ -40,7 +40,7 @@ def test_bcd_basic():
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
     assert list(img.shape) == [3, 224, 224]
-    assert list(targets.shape) == [1]
+    assert list(targets.shape) == [2]
 
     # Dataset length
     assert len(all_dataset) == 6069
@@ -62,7 +62,7 @@ def test_bcd_local():
     #Test correct cache_dir func
     cache_test = BikitDataset(name="bcd", split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
     img, targets = cache_test[0]
-    assert list(targets.shape) == [1]
+    assert list(targets.shape) == [2]
 
 if __name__ == '__main__':
     test_bcd_local()
