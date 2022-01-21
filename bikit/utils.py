@@ -75,6 +75,9 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redo
     if "test" in name:
         datasets = DEMO_DATASETS
         print(datasets[name])
+    elif "meta4" in name:
+        print("Please download the 4 used datasets manually: [download_dataset(name) for name in ['bcd', 'codebrim-classif-balanced', 'mcds_Bikit', 'sdnet_binary']]")
+        return 0
     else:
         datasets = DATASETS
         assert name in list(
