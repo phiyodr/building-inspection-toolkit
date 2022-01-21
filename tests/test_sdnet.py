@@ -29,26 +29,29 @@ if home_path in travis_homes:
 
 
 def test_sdnet_basic():
-    all_dataset = BikitDataset(name="sdnet", split="")
-    transform_dataset = BikitDataset(name="sdnet", split="",
-        transform=transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()]))
-    train_dataset = BikitDataset(name="sdnet", split="train")
-    val_dataset = BikitDataset(name="sdnet", split="val")
-    test_dataset = BikitDataset(name="sdnet", split="test")
-    development_dataset = BikitDataset(name="sdnet", split="test", devel_mode=True)
-    img, targets = all_dataset[0]
-    assert img.dtype == torch.float32
-    assert targets.dtype == torch.float32
-    assert list(img.shape) == [3, 256, 256]
-    assert list(targets.shape) == [6]
+    for name in ["sdnet", "sdnet_binary"]:
+        all_dataset = BikitDataset(name="sdnet", split="")
+        transform_dataset = BikitDataset(name="sdnet", split="",
+            transform=transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()]))
+        train_dataset = BikitDataset(name="sdnet", split="train")
+        val_dataset = BikitDataset(name="sdnet", split="val")
+        test_dataset = BikitDataset(name="sdnet", split="test")
+        development_dataset = BikitDataset(name="sdnet", split="test", devel_mode=True)
+        img, targets = all_dataset[0]
+        assert img.dtype == torch.float32
+        assert targets.dtype == torch.float32
+        assert list(img.shape) == [3, 256, 256]
+        assert list(targets.shape) == [6]
 
-    # Dataset length
-    assert len(all_dataset) == 56092
-    assert len(train_dataset) == 50488
-    assert len(val_dataset) == 2808
-    assert len(test_dataset) == 2796
-    assert len(development_dataset) == 100
-    assert len(transform_dataset) == 56092
+        # Dataset length
+        assert len(all_dataset) == 56092
+        assert len(train_dataset) == 50488
+        assert len(val_dataset) == 2808
+        assert len(test_dataset) == 2796
+        assert len(development_dataset) == 100
+        assert len(transform_dataset) == 56092
+
+
 
 @pytest.mark.skipif(home_path in travis_homes,
                     reason="Long-running test with real datasets for local use only, not on Travis.")
