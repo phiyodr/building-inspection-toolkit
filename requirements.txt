@@ -8,3 +8,4 @@ patool
 pathlib
 tqdm
 opencv-python
+opencv-contrib-python # for windows
