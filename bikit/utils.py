@@ -97,6 +97,8 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redo
     download_name = data_dict["download_name"]
     if name == "codebrim-classif-balanced":
         cache_full_dir = os.path.join(cache_dir, download_name, "classification_dataset_balanced")
+    #elif name == "codebrim-classif-balanced":
+    #    cache_full_dir = os.path.join(cache_dir, download_name, "classification_dataset")
     else:
         cache_full_dir = os.path.join(cache_dir, download_name)
 
@@ -122,7 +124,7 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redo
         for idx, (url, file_name, checksum, size) in enumerate(zip(urls, names, checksums, sizes)):
             print(f"Start to download file {idx + 1} of {len(urls)} with {size}.")
             cache_zip = os.path.join(cache_full_dir, file_name)
-            if name == "codebrim-classif-balanced":
+            if name in ["codebrim-classif-balanced", "codebrim-classif"]:
                 codebrim_gdrive_download(total_size=size, download_id=url, full_cache_dir=cache_zip)
             else:
                 if name == "sdnet":

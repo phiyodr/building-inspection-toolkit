@@ -86,8 +86,7 @@ class BikitDataset(Dataset):
         if self.load_all_in_mem:
             img = self.img_dict[data['img_name']]
         else:
-            img_path = data['img_path'] if data['img_path'][:5] != 'sdnet' else data['img_path'][:5] + '_binary' + data['img_path'][5:]
-            img_filename = Path(os.path.join(self.cache_full_dir, img_path))
+            img_filename = Path(os.path.join(self.cache_full_dir, data['img_path']))
             img = self.img_loader(img_filename)
         if self.transform:
             img = self.transform(img)
