@@ -8,7 +8,7 @@ with open('requirements.txt') as file:
     
 setuptools.setup(
     name="bikit",
-    version="0.1.2",
+    version="0.1.3",
     author="Philipp J. Roesch, Johannes Flotzinger",
     author_email="philipp.roesch@unibw.de, johannes.flotzinger@unibw.de",
     description="Bridge Inspection Toolkit",

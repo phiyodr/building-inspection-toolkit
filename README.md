@@ -20,7 +20,7 @@ This DataHub is build for [PyTorch](https://pytorch.org/).
 Name      | Type        | Unique images | Fix eval set
 ----------|-------------|---------------|-------------
 CDS   [[Web]](https://www.repository.cam.ac.uk/handle/1810/267902)    | Binary Clf  |            1k | ukn
-SDNET  [[Web]](https://digitalcommons.usu.edu/all_datasets/48/)    | Binary Clf  |           13k | bik
+SDNET  [[Web]](https://digitalcommons.usu.edu/all_datasets/48/)    | Binary Clf  |           56k | bik
 BCD  [[Paper]](https://www.mdpi.com/2076-3417/9/14/2867)  [[Data]](https://github.com/tjdxxhy/crack-detection)   | Binary Clf  |            6k | yes
 MCDS [[Paper]](https://www.researchgate.net/publication/332571358_Multi-classifier_for_Reinforced_Concrete_Bridge_Defects) [[Data]](https://zenodo.org/record/2601506)  | 10-Class Clf  | 3,617 | no, bikit
 CODEBRIM [[Paper]](https://openaccess.thecvf.com/content_CVPR_2019/html/Mundt_Meta-Learning_Convolutional_Neural_Architectures_for_Multi-Target_Concrete_Defect_Classification_With_CVPR_2019_paper.html) [[Data]](https://zenodo.org/record/2620293#.YO8rj3UzZH4) | 6-Class Multi-target Clf  | 7261 | **yes** | yes
@@ -44,10 +44,16 @@ We provide carefully selected *train/valid/test* (for large datasets). We introd
 | ----------------------------|----------------------------|-------------------------------|
 | `cds`                       | `["train", "val", "test"]` |          
 | `bcd`                       | `["train", "val", "test"]` |     
-| `sdnet`                     | `["train", "val", "test"]` |         
+| `sdnet`                     | `["train", "val", "test"]` | Many wrong labels        
+| `sdnet_binary`              | `["train", "val", "test"]` | Many wrong labels; Binaried version of sdnet: crack, no crack
+| `sdnet_bikit`               | `["train", "val", "test"]` | Cleaned bikit version     
+| `sdnet_bikit_binary`        | `["train", "val", "test"]` | Cleaned bikit version; Binaried version of sdnet: crack, no crack             
 | `mcds_Bukhsh`               | `["trainval", "test"]`     | Bukhsh et al. creates a 10 class dataset out of the 3-step dataset from Hüthwohl et al.  |
-| `mcds_Bikit`                | `["train", "val", "test"]` |
+| `mcds_bikit`                | `["train", "val", "test"]` | Cleaned bikit version
 | `codebrim-classif-balanced` | `["train", "val", "test"]` | Underrepresented classes are oversampled.  |
+| `codebrim-classif`          | `["train", "val", "test"]` | Original set  |
+| `meta3`		        	  | `["train", "val", "test"]` | 6-class multi-target dataset based on bcd, codebrim-classif, and mcds_bikit. |
+| `meta4`       		   	  | `["train", "val", "test"]` | 6-class multi-target dataset based on bcd, codebrim-classif, mcds_bikit, and sdnet_bikit_binary.  |
 
 
 # Use the Application
@@ -72,7 +78,7 @@ from torchvision import transforms
 
 # Select a dataset:
 all_datasets =list_datasets()
-name = "mcds_Bikit"
+name = "mcds_bikit"
 
 download_dataset(name) # equal to `download_dataset("mcds_Bukhsh")` 
 my_transform = transforms.Compose([transforms.Resize((256,256)), transforms.ToTensor()])
