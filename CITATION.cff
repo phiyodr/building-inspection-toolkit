@@ -1,0 +1,8 @@
+@misc{rosch2022bikit,
+  author = {Rösch, Philipp J. and Flotzinger, Johannes},
+  title = {Building Inspection Toolkit},
+  year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/phiyodr/building-inspection-toolkit}}
+}
