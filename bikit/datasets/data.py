@@ -20,7 +20,7 @@ class BikitDataset(Dataset):
     with open(Path(os.path.join(bikit_path, "data/datasets.json"))) as f:
         DATASETS = json.load(f)
 
-    def __init__(self, name="bcd", split=None, cache_dir=None, transform=None, img_type="pil", return_type="pt",
+    def __init__(self, name, split=None, cache_dir=None, transform=None, img_type="pil", return_type="pt",
                  load_all_in_mem=False, devel_mode=False):
         """
 
