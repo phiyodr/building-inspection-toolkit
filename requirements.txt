@@ -1,4 +1,4 @@
-numpy
+numpy > 1.20
 requests
 torch
 torchvision
@@ -7,3 +7,6 @@ Pillow
 patool
 pathlib
 tqdm
+opencv-python
+opencv-contrib-python # for windows
+efficientnet_pytorch

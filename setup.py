@@ -1,14 +1,17 @@
 import setuptools
 
-with open("README.md", "r") as f:
-    long_description = f.read()
+with open("README.md", "r") as file:
+    long_description = file.read()
 
+with open('requirements.txt') as file:
+    required = file.read().splitlines()
+    
 setuptools.setup(
     name="bikit",
-    version="0.1.2",
+    version="0.1.4",
     author="Philipp J. Roesch, Johannes Flotzinger",
     author_email="philipp.roesch@unibw.de, johannes.flotzinger@unibw.de",
-    description="Bridge Inspection Toolkit",
+    description="Building Inspection Toolkit",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/phiyodr/bridge-inspection-toolkit",
@@ -21,5 +24,6 @@ setuptools.setup(
     python_requires='>=3.6',
     package_data={
         # If any package contains *.txt or *.rst files, include them:
-        "": ["*.csv", "*.json"]
-    })
+        "": ["*.csv", "*.json"]},
+    install_requires=required
+    )
