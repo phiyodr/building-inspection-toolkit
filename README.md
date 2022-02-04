@@ -58,6 +58,9 @@ We provide carefully selected *train/valid/test* (for large datasets). We introd
 
 # Use the Application
 
+
+### List data
+
 ```python
 from bikit.utils import list_datasets, download_dataset
 
@@ -92,36 +95,39 @@ for i, (imgs, labels) in enumerate(train_dataset):
 ```
 
 
+### List Models
+
+```python
+from bikit.utils import list_models
+list_models()
+```
+
+
 ### Model Inference
 
 ```python
-from bikit.utils import load_model, get_metadata
+from bikit.utils import load_model, get_metadata, load_img_from_url
 from bikit.models import make_prediction
 import requests
 from PIL import Image
-from io import BytesIO
 
 img_url = "https://github.com/phiyodr/bridge-inspection-toolkit/raw/develop/bikit/data/11_001990.jpg"
+img = load_img_from_url(img_url)
 
-img = Image.open(BytesIO(requests.get(img_url).content))
-
-
-img_url = "https://github.com/phiyodr/bridge-inspection-toolkit/raw/develop/bikit/data/11_001990.jpg"
 model_name = "MCDS_ResNet50"
-
 print(model_name)
 model, metadata = load_model(model_name)
-prob, pred = make_prediction(model, img_path, metadata)
+prob, pred = make_prediction(model, img_path, metadata, print_predictions=True, preprocess_image=True)
 #> MCDS_ResNet50
-#> rack                [██████████████████████████████████████  ] 0.9586% 
-#> fflorescence        [                                        ] 0.0056% 
-#> xposedReinforcement [                                        ] 0.0018% 
-#> eneral              [                                        ] 0.0060% 
-#> oDefect             [                                        ] 0.0129% 
-#> ustStaining         [                                        ] 0.0044% 
-#> caling              [                                        ] 0.0005% 
-#> palling             [                                        ] 0.0085% 
-#> nference time (CPU): 44.26 ms
+#> Crack                [██████████████████████████████████████  ] 0.9586% 
+#> Efflorescence        [                                        ] 0.0056% 
+#> ExposedReinforcement [                                        ] 0.0018% 
+#> General              [                                        ] 0.0060% 
+#> NoDefect             [                                        ] 0.0129% 
+#> RustStaining         [                                        ] 0.0044% 
+#> Scaling              [                                        ] 0.0005% 
+#> Spalling             [                                        ] 0.0085% 
+#> Inference time (CPU): 44.26 ms
 ```
 
 ### Metrics

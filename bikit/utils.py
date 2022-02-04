@@ -95,9 +95,12 @@ def download_model(name, cache_dir='~/.cache/bikit-models', force_redownload=Fal
 
 def download_metadata(cache_dir='~/.cache/bikit-models', force_redownload=False):
     """Download metadata.json from Repository."""
+    cache_dir = os.path.expanduser(cache_dir)
     metadata_url = "https://github.com/phiyodr/bikit-models/raw/master/metadata.json"
-    filename = os.path.join(os.path.expanduser(cache_dir), "metadata.json")
+    filename = os.path.join(cache_dir, "metadata.json")
     if not os.path.isfile(filename) or force_redownload:
+        if not os.path.isdir(cache_dir):
+            os.makedirs(cache_dir)
         urlretrieve(metadata_url, filename)
         print(f"Successfully downloaded metadata.json to {filename}.")
     else:
