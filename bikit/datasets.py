@@ -16,7 +16,9 @@ from tqdm import tqdm
 class BikitDataset(Dataset):
     """PyTorch Dataset for all Datasets"""
     #bikit_path = Path(dirname(dirname(__file__)))
-    bikit_path = Path(os.path.join(bikit_path, "bikit"))
+    #bikit_path = Path(os.path.join(bikit_path, "bikit"))
+    bikit_path = Path(os.path.join(dirname(dirname(__file__)), "bikit"))
+
     with open(Path(os.path.join(bikit_path, "data/datasets.json"))) as f:
         DATASETS = json.load(f)
 
