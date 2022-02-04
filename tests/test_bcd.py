@@ -19,9 +19,9 @@ home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
 
 if home_path in travis_homes:
-    image_path = home_path / ".bikit/bcd/"
+    image_path = home_path / ".cache/bikit/bcd/"
     makedirs(image_path)
-    image_file = home_path / ".bikit/bcd/1.jpg"
+    image_file = home_path / ".cache/bikit/bcd/1.jpg"
     img_np = np.ones((224, 224, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
@@ -59,7 +59,7 @@ def test_bcd_local():
     assert len(all_in_mem_develmode) == 100
 
     #Test correct cache_dir func
-    cache_test = BikitDataset(name="bcd", split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name="bcd", split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".cache/bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [2]
 

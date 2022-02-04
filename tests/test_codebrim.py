@@ -19,9 +19,9 @@ home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
 
 if home_path in travis_homes:
-    image_path = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
+    image_path = home_path / ".cache/bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/"
     Path(image_path).mkdir(parents=True, exist_ok=True)
-    image_file = home_path / ".bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
+    image_file = home_path / ".cache/bikit/codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png"
     img_np = np.ones((379, 513, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
@@ -62,7 +62,7 @@ def test_codebrim_local():
     all_in_mem_develmode = BikitDataset(name, split="", load_all_in_mem=True, devel_mode=True)
 
     #Test correct cache_dir func
-    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".cache/bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [6]
 

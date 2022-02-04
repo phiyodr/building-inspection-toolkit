@@ -19,9 +19,9 @@ home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
 
 if home_path in travis_homes:
-    image_path = home_path / ".bikit/mcds/Corrosion/no rust staining"
+    image_path = home_path / ".cache/bikit/mcds/Corrosion/no rust staining"
     makedirs(image_path)
-    image_file = home_path / ".bikit/mcds/Corrosion/no rust staining/001_0fwtaowy.t1o.jpg"
+    image_file = home_path / ".cache/bikit/mcds/Corrosion/no rust staining/001_0fwtaowy.t1o.jpg"
     img_np = np.ones((92, 400, 3), dtype=np.int8) * 100
     img_pil = Image.fromarray(np.uint8(img_np)).convert('RGB')
     img_pil.save(image_file)
@@ -62,7 +62,7 @@ def test_mcds_bukhsh_local():
     assert len(all_in_mem_develmode) == 100
 
     #Test correct cache_dir func
-    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".cache/bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [10]
 
@@ -104,7 +104,7 @@ def test_mcds_bikit_local():
     assert len(all_in_mem) == 2597
 
     #Test correct cache_dir func
-    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".cache/bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [8]
 
