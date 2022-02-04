@@ -8,10 +8,10 @@ with open('requirements.txt') as file:
     
 setuptools.setup(
     name="bikit",
-    version="0.1.3",
+    version="0.1.4",
     author="Philipp J. Roesch, Johannes Flotzinger",
     author_email="philipp.roesch@unibw.de, johannes.flotzinger@unibw.de",
-    description="Bridge Inspection Toolkit",
+    description="Building Inspection Toolkit",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/phiyodr/bridge-inspection-toolkit",
