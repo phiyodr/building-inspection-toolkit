@@ -9,6 +9,7 @@
 
 
 
+
 **Bridge Inspection Toolkit** helps you with dataset handling in the field for Damage Detection for Reinforced Concrete Bridges.
 This DataHub is build for [PyTorch](https://pytorch.org/). 
 
@@ -117,7 +118,7 @@ img = load_img_from_url(img_url)
 model_name = "MCDS_ResNet50"
 print(model_name)
 model, metadata = load_model(model_name)
-prob, pred = make_prediction(model, img_path, metadata, print_predictions=True, preprocess_image=True)
+prob, pred = make_prediction(model, img, metadata, print_predictions=True, preprocess_image=True)
 #> MCDS_ResNet50
 #> Crack                [██████████████████████████████████████  ] 0.9586% 
 #> Efflorescence        [                                        ] 0.0056% 
