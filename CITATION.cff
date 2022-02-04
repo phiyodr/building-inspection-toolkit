@@ -1,8 +1,13 @@
-@misc{rosch2022bikit,
-  author = {Rösch, Philipp J. and Flotzinger, Johannes},
-  title = {Building Inspection Toolkit},
-  year = {2022},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/phiyodr/building-inspection-toolkit}}
-}
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Rösch"
+  given-names: "Philipp J."
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+- family-names: "Flotzinger"
+  given-names: "Johannes"
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "Building Inspection Toolkit"
+version: 0.1.4
+date-released: 2022-02-04
+url: "https://github.com/phiyodr/building-inspection-toolkit/"
