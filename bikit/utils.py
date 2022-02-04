@@ -75,8 +75,8 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redo
     if "test" in name:
         datasets = DEMO_DATASETS
         print(datasets[name])
-    elif "meta4" in name:
-        print("Please download the 4 used datasets manually: [download_dataset(name) for name in ['bcd', 'codebrim-classif-balanced', 'mcds_Bikit', 'sdnet_binary']]")
+    elif "meta" in name:
+        print("Please download the needed datasets manually: [download_dataset(name) for name in ['bcd', 'codebrim-classif-balanced', 'mcds_Bikit', 'sdnet_binary']]")
         return 0
     else:
         datasets = DATASETS
@@ -121,11 +121,12 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redo
         os.makedirs(cache_full_dir)
         # Download
 
+        # Some datasets consists of multiple files
         for idx, (url, file_name, checksum, size) in enumerate(zip(urls, names, checksums, sizes)):
             print(f"Start to download file {idx + 1} of {len(urls)} with {size}.")
             cache_zip = os.path.join(cache_full_dir, file_name)
-            if name in ["codebrim-classif-balanced", "codebrim-classif"]:
-                codebrim_gdrive_download(total_size=size, download_id=url, full_cache_dir=cache_zip)
+            if name in ["codebrim-classif-balanced", "codebrim-classif", "sdnet_bikit", "sdnet_bikit_binary"]:
+                gdrive_download(total_size=size, download_id=url, full_cache_dir=cache_zip)
             else:
                 if name == "sdnet":
                     ssl._create_default_https_context = ssl._create_unverified_context
@@ -146,6 +147,8 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redo
             if file_type == "zip":
                 print("\nStart to unzip file", end=" ")
                 with zipfile.ZipFile(cache_zip, 'r') as zip_ref:
+                    if name in ["sdnet_bikit", "sdnet_bikit_binary"]:
+                        cache_full_dir = "/".join(cache_full_dir.split("/")[:-1])
                     zip_ref.extractall(cache_full_dir)
                 print("- unzip done!")
             elif file_type == "rar":
@@ -163,7 +166,7 @@ def download_dataset(name, cache_dir='~/.bikit', rm_zip_or_rar=False, force_redo
                 print(f"Removing {cache_zip}.")
                 os.remove(cache_zip)
     else:
-        print(f"{cache_dir} and {cache_full_dir} already exists")
+        print(f"{cache_dir} and {cache_full_dir} already exists.")
 
 
 def _progressbar(cur, total=100):
@@ -203,7 +206,7 @@ def _md5(filename):
     return hash_md5.hexdigest()
 
 
-def codebrim_gdrive_download(total_size, download_id="", full_cache_dir=""):
+def gdrive_download(total_size, download_id, full_cache_dir=""):
     """
     Download the codebrim_classif_dataset
     :param total_size: file size of the zipfile from the json file
@@ -216,14 +219,14 @@ def codebrim_gdrive_download(total_size, download_id="", full_cache_dir=""):
     # download the Zip file
     session = requests.Session()
     response = session.get(url, params={'id': download_id}, stream=True)
-    token = get_confirm_token(response)
+    token = _get_confirm_token(response)
 
 
     if token:
         params = {'id': download_id, 'confirm': token}
         response = session.get(url, params=params, stream=True)
 
-        save_response_content(response=response, destination=full_cache_dir, totalsize=total_size)
+        _save_response_content(response=response, destination=full_cache_dir, totalsize=total_size)
         print(f"{full_cache_dir} is done")
     else:
         raise Exception("There was an Error while getting the download token!"
@@ -231,13 +234,13 @@ def codebrim_gdrive_download(total_size, download_id="", full_cache_dir=""):
                         " Please try again later!")
 
 
-def get_confirm_token(response):
+def _get_confirm_token(response):
     for key, value in response.cookies.items():
         if key.startswith('download_warning'):
             return value
 
 
-def save_response_content(response, destination, totalsize):
+def _save_response_content(response, destination, totalsize):
     chunk_size = 32768
     counter = 0
     print_counter = 0
@@ -250,30 +253,26 @@ def save_response_content(response, destination, totalsize):
                 print_counter += 1
                 filesize = float(totalsize.split(" ")[0]) * 1073741824
                 _schedule(blocknum=counter, blocksize=chunk_size, totalsize=filesize)
-    sys.stdout.write(f"\n{round((chunk_size * counter) / 1073741824, 2)}GB Downloaded. Download finished.\n", )
+    sys.stdout.write(f"\n{round((chunk_size * counter) / 1073741824, 2)} GB Downloaded. Download finished.\n", )
 
 
 if __name__ == "__main__":
 
-    # list_datasets(verbose=True)
-    #download_dataset(name='codebrim-classif-balanced', rm_zip_or_rar=True, force_redownload=True)
-    download_dataset(name='cds', rm_zip_or_rar=True, force_redownload=True)
-    #download_dataset(name='sdnet', rm_zip_or_rar=True, force_redownload=True)
-    # download_dataset(name='mcds_Bukhsh', cache_dir='~/.bikit', rm_zip_or_rar=True)
-    download_dataset(name='bcd', cache_dir='~/.bikit', rm_zip_or_rar=True)
-    #download_dataset(name="test_zip", force_redownload=True)
+    name = "sdnet_bikit"
+
+    #download_dataset(name, rm_zip_or_rar=True, force_redownload=False)
     print("===Download done===")
-    from bikit.datasets.mcds import McdsDataset
+    from bikit.datasets.data import BikitDataset
     from torch.utils.data import DataLoader
     from torchvision import transforms
 
     my_transform = transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()])
-    trainval_dataset = McdsDataset(split="trainval", transform=my_transform)
+    trainval_dataset = BikitDataset(name, split="val", transform=my_transform)
     trainval_loader = DataLoader(dataset=trainval_dataset, batch_size=64, shuffle=False, num_workers=0)
 
     # Use it in your training loop
     for i, (imgs, labels) in enumerate(trainval_loader):
-        print(i, imgs.shape, labels.shape)
+        print(i, imgs.shape, labels.shape, labels)
         if i > 5:
             break
     print("===Done===")
