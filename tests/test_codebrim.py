@@ -13,8 +13,7 @@ import os
 
 # Import module under test
 # sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from bikit.datasets.codebrim import CodebrimDataset
-from bikit.datasets.data import BikitDataset
+from bikit.datasets import BikitDataset
 
 home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
@@ -29,12 +28,13 @@ if home_path in travis_homes:
 
 
 def test_codebrim_basic():
-    all_dataset = BikitDataset(name="codebrim-classif-balanced", split="")
-    train_dataset = BikitDataset(name="codebrim-classif-balanced", split="train")
-    val_dataset = BikitDataset(name="codebrim-classif-balanced", split="val")
-    test_dataset = BikitDataset(name="codebrim-classif-balanced", split="test")
-    development_dataset = BikitDataset(name="codebrim-classif-balanced", split="test", devel_mode=True)
-    transform_dataset = BikitDataset(name="codebrim-classif-balanced", split="",
+    name = "codebrim-classif-balanced"
+    all_dataset = BikitDataset(name, split="")
+    train_dataset = BikitDataset(name, split="train")
+    val_dataset = BikitDataset(name, split="val")
+    test_dataset = BikitDataset(name, split="test")
+    development_dataset = BikitDataset(name, split="test", devel_mode=True)
+    transform_dataset = BikitDataset(name, split="",
                                         transform=transforms.Compose(
                                             [transforms.Resize((256, 256)), transforms.ToTensor()]))
     img, targets = all_dataset[0]
@@ -55,13 +55,14 @@ def test_codebrim_basic():
 @pytest.mark.skipif(home_path in travis_homes,
                     reason="Long-running test with real datasets for local use only, not on Travis.")
 def test_codebrim_local():
+    name = "codebrim-classif-balanced"
 
     # all_in_mem Test requires at least 10GB of free RAM to work
     # all_in_mem = BikitDataset(name="codebrim-classif-balanced", split="", load_all_in_mem=True)
-    all_in_mem_develmode = BikitDataset(name="codebrim-classif-balanced", split="", load_all_in_mem=True, devel_mode=True)
+    all_in_mem_develmode = BikitDataset(name, split="", load_all_in_mem=True, devel_mode=True)
 
     #Test correct cache_dir func
-    cache_test = BikitDataset(name="codebrim-classif-balanced", split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [6]
 

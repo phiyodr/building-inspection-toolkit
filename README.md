@@ -72,15 +72,14 @@ download_dataset("<name>")
 
 ```python
 from bikit.utils import download_dataset
-from bikit.datasets.data import BikitDataset
+from bikit.datasets import BikitDataset # Deprecated: from bikit.datasets.data import BikitDataset
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
 # Select a dataset:
-all_datasets =list_datasets()
 name = "mcds_bikit"
 
-download_dataset(name) # equal to `download_dataset("mcds_Bukhsh")` 
+download_dataset(name) # equals to `download_dataset("mcds_Bukhsh")` 
 my_transform = transforms.Compose([transforms.Resize((256,256)), transforms.ToTensor()])
 # Use return_type 'pt' (default) or 'np'
 train_dataset = BikitDataset(name, split="train", transform=my_transform, return_type="pt") 

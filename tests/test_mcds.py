@@ -13,7 +13,7 @@ import os
 
 # Import module under test
 # sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from bikit.datasets.data import BikitDataset
+from bikit.datasets import BikitDataset
 
 home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
@@ -28,11 +28,12 @@ if home_path in travis_homes:
 
 
 def test_mcds_bukhsh_basic():
-    all_dataset = BikitDataset(name="mcds_Bukhsh",split="")
-    trainval_dataset = BikitDataset(name="mcds_Bukhsh",  split="trainval")
-    test_dataset = BikitDataset(name="mcds_Bukhsh", split="test")
-    development_dataset = BikitDataset(name="mcds_Bukhsh", split="test", devel_mode=True)
-    transform_dataset = BikitDataset(name="mcds_Bukhsh", split="", devel_mode=True,
+    name = "mcds_Bukhsh"
+    all_dataset = BikitDataset(name,split="")
+    trainval_dataset = BikitDataset(name,  split="trainval")
+    test_dataset = BikitDataset(name, split="test")
+    development_dataset = BikitDataset(name, split="test", devel_mode=True)
+    transform_dataset = BikitDataset(name, split="", devel_mode=True,
                                     transform=transforms.Compose(
                                         [transforms.Resize((256, 256)), transforms.ToTensor()]))
 
@@ -53,25 +54,27 @@ def test_mcds_bukhsh_basic():
 @pytest.mark.skipif(home_path in travis_homes,
                     reason="Long-running test with real datasets for local use only, not on Travis.")
 def test_mcds_bukhsh_local():
-    all_in_mem = BikitDataset(name="mcds_Bukhsh", split="", load_all_in_mem=True)
-    all_in_mem_develmode = BikitDataset(name="mcds_Bukhsh", split="", load_all_in_mem=True, devel_mode=True)
+    name = "mcds_Bukhsh"
+    all_in_mem = BikitDataset(name, split="", load_all_in_mem=True)
+    all_in_mem_develmode = BikitDataset(name, split="", load_all_in_mem=True, devel_mode=True)
 
     assert len(all_in_mem) == 2612
     assert len(all_in_mem_develmode) == 100
 
     #Test correct cache_dir func
-    cache_test = BikitDataset(name="mcds_Bukhsh", split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [10]
 
 
 def test_mcds_bikit_basic():
-    all_dataset = BikitDataset(name="mcds_Bikit", split="")
-    train_dataset = BikitDataset(name="mcds_Bikit", split="train")
-    valid_dataset = BikitDataset(name="mcds_Bikit", split="valid")
-    test_dataset = BikitDataset(name="mcds_Bikit", split="test")
-    development_dataset = BikitDataset(name="mcds_Bikit", split="test", devel_mode=True)
-    transform_dataset = BikitDataset(name="mcds_Bikit", split="",
+    name = "mcds_bikit"
+    all_dataset = BikitDataset(name, split="")
+    train_dataset = BikitDataset(name, split="train")
+    valid_dataset = BikitDataset(name, split="valid")
+    test_dataset = BikitDataset(name, split="test")
+    development_dataset = BikitDataset(name, split="test", devel_mode=True)
+    transform_dataset = BikitDataset(name, split="",
                                     transform=transforms.Compose(
                                         [transforms.Resize((256, 256)), transforms.ToTensor()]))
 
@@ -93,21 +96,22 @@ def test_mcds_bikit_basic():
 @pytest.mark.skipif(home_path in travis_homes,
                     reason="Long-running test with real datasets for local use only, not on Travis.")
 def test_mcds_bikit_local():
-    all_in_mem = BikitDataset(name="mcds_Bikit", split="", load_all_in_mem=True)
-    all_in_mem_develmode = BikitDataset(name="mcds_Bikit", split="", load_all_in_mem=True, devel_mode=True)
+    name = "mcds_bikit"
+    all_in_mem = BikitDataset(name, split="", load_all_in_mem=True)
+    all_in_mem_develmode = BikitDataset(name, split="", load_all_in_mem=True, devel_mode=True)
 
     assert len(all_in_mem_develmode) == 100
     assert len(all_in_mem) == 2597
 
     #Test correct cache_dir func
-    cache_test = BikitDataset(name="mcds_Bikit", split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [8]
 
 
 def test_mcds_catch():
     with pytest.raises(Exception):
-        d = BikitDataset(name="mcds_Bikit", split="ERROR")
+        d = BikitDataset(name="mcds_bikit", split="ERROR")
         d = BikitDataset(name="WRONG_NAME")
 
 

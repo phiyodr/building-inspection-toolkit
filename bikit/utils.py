@@ -258,21 +258,21 @@ def _save_response_content(response, destination, totalsize):
 
 if __name__ == "__main__":
 
-    name = "sdnet_bikit"
+    name = "codebrim-classif"
 
     #download_dataset(name, rm_zip_or_rar=True, force_redownload=False)
     print("===Download done===")
-    from bikit.datasets.data import BikitDataset
+    from bikit.datasets import BikitDataset
     from torch.utils.data import DataLoader
     from torchvision import transforms
 
     my_transform = transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()])
-    trainval_dataset = BikitDataset(name, split="val", transform=my_transform)
+    trainval_dataset = BikitDataset(name, split="test", transform=my_transform)
     trainval_loader = DataLoader(dataset=trainval_dataset, batch_size=64, shuffle=False, num_workers=0)
 
     # Use it in your training loop
     for i, (imgs, labels) in enumerate(trainval_loader):
         print(i, imgs.shape, labels.shape, labels)
-        if i > 5:
+        if i > 1:
             break
     print("===Done===")

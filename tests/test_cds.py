@@ -13,7 +13,7 @@ import os
 
 # Import module under test
 # sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from bikit.datasets.cds import CdsDataset
+from bikit.datasets import BikitDataset
 
 home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
@@ -28,13 +28,14 @@ if home_path in travis_homes:
 
 
 def test_cds_basic():
-    all_dataset = CdsDataset(split="")
-    transform_dataset = CdsDataset(split="",
+    name = "cds"
+    all_dataset = BikitDataset(name, split="")
+    transform_dataset = BikitDataset(name, split="",
                                   transform=transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()]))
-    train_dataset = CdsDataset(split="train")
-    val_dataset = CdsDataset(split="val")
-    test_dataset = CdsDataset(split="test")
-    development_dataset = CdsDataset(split="test", devel_mode=True)
+    train_dataset = BikitDataset(name, split="train")
+    val_dataset = BikitDataset(name, split="val")
+    test_dataset = BikitDataset(name, split="test")
+    development_dataset = BikitDataset(name, split="test", devel_mode=True)
     img, targets = all_dataset[0]
     assert img.dtype == torch.float32
     assert targets.dtype == torch.float32
@@ -52,14 +53,15 @@ def test_cds_basic():
 @pytest.mark.skipif(home_path in travis_homes,
                     reason="Long-running test with real datasets for local use only, not on Travis.")
 def test_cds_local():
-    all_in_mem_dataset = CdsDataset(split="", load_all_in_mem=True)
-    all_in_mem_develmode = CdsDataset(split="", load_all_in_mem=True, devel_mode=True)
+    name = "cds"
+    all_in_mem_dataset = BikitDataset(name, split="", load_all_in_mem=True)
+    all_in_mem_develmode = BikitDataset(name, split="", load_all_in_mem=True, devel_mode=True)
 
     assert len(all_in_mem_dataset) == 1028
     assert len(all_in_mem_develmode) == 100
 
     #Test correct cache_dir func
-    cache_test = CdsDataset(split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
+    cache_test = BikitDataset(name, split="", cache_dir=Path(os.path.join(os.path.expanduser("~"), ".bikit")))
     img, targets = cache_test[0]
     assert list(targets.shape) == [2]
 

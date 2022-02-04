@@ -13,8 +13,7 @@ import os
 
 # Import module under test
 # sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from bikit.datasets.bcd import BcdDataset
-from bikit.datasets.data import BikitDataset
+from bikit.datasets import BikitDataset
 
 home_path = Path(path.expanduser('~'))
 travis_homes = [Path("/home/travis"), Path("C:/Users/travis"), Path("/Users/travis")]
