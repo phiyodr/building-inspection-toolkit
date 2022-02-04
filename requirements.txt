@@ -7,6 +7,6 @@ Pillow
 patool
 pathlib
 tqdm
-opencv-python
-opencv-contrib-python # for windows
+matplotlib
+opencv-contrib-python # opencv-python
 efficientnet_pytorch
