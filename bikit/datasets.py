@@ -1,8 +1,10 @@
 import torch
 from torch.utils.data import Dataset
 import pandas as pd
+import numpy as np
 import json
 import os
+import PIL
 from PIL import Image
 from torchvision import transforms
 from os.path import dirname
@@ -11,14 +13,14 @@ from pathlib import Path
 from tqdm import tqdm
 
 
-class BcdDataset(Dataset):
-    """PyTorch Dataset for BCD"""
-    bikit_path = Path(dirname(dirname(__file__)))
-
+class BikitDataset(Dataset):
+    """PyTorch Dataset for all Datasets"""
+    #bikit_path = Path(dirname(dirname(__file__)))
+    bikit_path = Path(os.path.join(bikit_path, "bikit"))
     with open(Path(os.path.join(bikit_path, "data/datasets.json"))) as f:
         DATASETS = json.load(f)
 
-    def __init__(self, name="bcd", split=None, cache_dir=None, transform=None, img_type="pil",
+    def __init__(self, name, split=None, cache_dir=None, transform=None, img_type="pil", return_type="pt",
                  load_all_in_mem=False, devel_mode=False):
         """
 
@@ -26,6 +28,7 @@ class BcdDataset(Dataset):
         :param split: Use 'train', 'val' or 'test.
         :param transform: Torch transformation for image data (this depends on your CNN).
         :param img_type: Load image as PIL or CV2.
+        :param return_type: Returns Torch tensor ('pt') or numpy ('np').
         :param cache_dir: Path to cache_dir.
         :param load_all_in_mem: Whether or not to load all image data into memory (this depends on the dataset size and
             your memory). Loading all in memory can speed up your training.
@@ -37,8 +40,14 @@ class BcdDataset(Dataset):
         elif img_type == "cv2":
             self.img_loader = cv2_loader
         assert name in list(self.DATASETS.keys()), f"This name does not exists. Use something from {list(DATASETS.keys())}."
-        bikit_path = Path(dirname(dirname(__file__)))
+        bikit_path = Path(os.path.join(dirname(dirname(__file__)), "bikit"))
+
         self.csv_filename = Path(os.path.join(bikit_path, "data", name) + ".csv")
+        self.split_column =DATASETS[name]["split_column"]
+        self.available_splits =DATASETS[name]["splits"]
+        assert split in self.available_splits + [""], f"{split} is not a valid split. Use somethong from {self.available_splits}."
+        assert return_type in ["pt", "np"],  f"{return_type} is not a valid return_type. Use somethong from {['pt', 'np']}."
+        self.return_type = return_type
 
         # Misc
         self.split = split
@@ -56,14 +65,14 @@ class BcdDataset(Dataset):
         self.transform = transform
         self.df = pd.read_csv(self.csv_filename)
         if split:
-            self.df = self.df[self.df["split_bikit"] == split]
+            self.df = self.df[self.df[self.split_column] == split]
         if devel_mode:
             self.df = self.df[:100]
         self.n_samples = self.df.shape[0]
 
         if load_all_in_mem:
             self.img_dict = {}
-            for index, row in tqdm(self.df.iterrows(), total=self.df.shape[0], desc="Load images in memory"):
+            for index, row in tqdm(self.df.iterrows(), total=self.df.shape[0], desc="Load images in CPU memory"):
                 img_filename = Path(os.path.join(self.cache_full_dir, row['img_path']))
                 img_name = row['img_name']
                 img = self.img_loader(img_filename)
@@ -82,11 +91,15 @@ class BcdDataset(Dataset):
             img = self.img_loader(img_filename)
         if self.transform:
             img = self.transform(img)
-        else:
+        elif self.return_type == "pt":
             img = transforms.ToTensor()(img)
-
+        if (self.return_type == "np") and isinstance(img, PIL.Image.Image):
+            img = np.array(img)
         # Get label with shape (1,)
-        label = torch.FloatTensor(data[self.class_names].to_numpy().astype("float32"))
+        if self.return_type == "np":
+            label = data[self.class_names].to_numpy().astype("float32")
+        else:
+            label = torch.FloatTensor(data[self.class_names].to_numpy().astype("float32"))
         return img, label
 
     def __len__(self):
@@ -94,12 +107,20 @@ class BcdDataset(Dataset):
 
 if __name__ == "__main__":
     print(__file__)
-    train_dataset = BcdDataset(split="train")
-    train_dataset = BcdDataset(split="train", img_type="cv2")
-    print(train_dataset.img_loader)
-    #train_dataset = BcdDataset(split="", load_all_in_mem=True)
-    img, targets = train_dataset[0]
+    dataset1 = BikitDataset(name="cds", split="train")
+    dataset2 = BikitDataset(name="sdnet", split="train", img_type="cv2")
+    dataset3 = BikitDataset(name="bcd", split="train", img_type="cv2")
+    dataset4 = BikitDataset(name="mcds_Bikit", split="train", img_type="cv2")
+    #train_dataset = BikitDataset(split="", load_all_in_mem=True)
+    img, targets = dataset1[0]
     print(img.shape, targets.shape)
-    print(len(train_dataset))
-    assert list(targets.shape) == [1]
-    print("===Done===")
+    print(len(dataset1))
+    print("======")
+    for key in DATASETS:
+        if key not in ["codebrim-classif"]:
+            for split in DATASETS[key]["splits"]:
+                for img_type in ["pil", "cv2"]:
+                    for return_type in ["pt", "np"]:
+                        dataset = BikitDataset(name=key, split=split, img_type=img_type, return_type=return_type)
+                        img, targets = dataset[0]
+                        print(key, split, img_type, return_type, img.shape, type(img), targets.shape, type(targets))
