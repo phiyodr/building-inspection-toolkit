@@ -21,7 +21,7 @@ def test_list_datasets():
 
 # @pytest.mark.skip(reason="no way of currently testing this")
 def test_download_dataset():
-    cache_dir = Path(os.path.expanduser('~/.bikit'))
+    cache_dir = Path(os.path.expanduser('~/.cache/bikit'))
     if os.path.exists(cache_dir / "test_rar"):
         shutil.rmtree(cache_dir / "test_rar")
     if os.path.exists(cache_dir / "test_zip"):
@@ -38,7 +38,7 @@ def test_download_dataset():
 
 
 def test_force_redownload():
-    cache_dir = Path(os.path.expanduser('~/.bikit'))
+    cache_dir = Path(os.path.expanduser('~/.cache/bikit'))
     if not os.path.exists(cache_dir / "test_zip/test_zip.zip"):
         os.mkdir(os.path.join(cache_dir, "test_zip"))
     os.mkdir(os.path.join(cache_dir, "test_zip", "force_test"))
@@ -47,12 +47,12 @@ def test_force_redownload():
 
 
 def test_zip_deletion():
-    cache_dir = Path(os.path.expanduser('~/.bikit'))
+    cache_dir = Path(os.path.expanduser('~/.cache/bikit'))
     download_dataset(name="test_zip", force_redownload=True, rm_zip_or_rar=True)
     assert not os.path.exists(os.path.join(cache_dir, "test_zip", "test_zip.zip"))
 
 def test_cache_dir():
-    cache_dir = Path(os.path.expanduser('~/.bikit'))
+    cache_dir = Path(os.path.expanduser('~/.cache/bikit'))
     test_dir = os.path.join(cache_dir, "cache_test")
     if os.path.exists(test_dir):
         shutil.rmtree(os.path.join(test_dir))

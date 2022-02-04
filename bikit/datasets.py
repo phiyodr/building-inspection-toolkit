@@ -56,7 +56,7 @@ class BikitDataset(Dataset):
         if cache_dir:
             self.cache_full_dir = Path(os.path.join(cache_dir))
         else:
-            self.cache_full_dir = Path(os.path.join(os.path.expanduser("~"), ".bikit"))
+            self.cache_full_dir = Path(os.path.join(os.path.expanduser("~"), ".cache/bikit"))
 
         self.devel_mode = devel_mode
         self.class_names = self.DATASETS[name]["class_names"]

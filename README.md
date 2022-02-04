@@ -68,7 +68,7 @@ list_datasets()
 download_dataset("<name>") 
 ```
 
-### Demo
+### BikitDataset
 
 ```python
 from bikit.utils import download_dataset
@@ -88,7 +88,48 @@ train_loader = DataLoader(dataset=train_dataset, batch_size=64, shuffle=False, n
 # Use it in your training loop
 for i, (imgs, labels) in enumerate(train_dataset):
 	print(i, imgs.shape, labels.shape)
+	break
 ```
+
+
+### Model Inference
+
+```python
+from bikit.utils import load_model, get_metadata
+from bikit.models import make_prediction
+import requests
+from PIL import Image
+from io import BytesIO
+
+img_url = "https://github.com/phiyodr/bridge-inspection-toolkit/raw/develop/bikit/data/11_001990.jpg"
+
+img = Image.open(BytesIO(requests.get(img_url).content))
+
+
+img_url = "https://github.com/phiyodr/bridge-inspection-toolkit/raw/develop/bikit/data/11_001990.jpg"
+model_name = "MCDS_ResNet50"
+
+print(model_name)
+model, metadata = load_model(model_name)
+prob, pred = make_prediction(model, img_path, metadata)
+#> MCDS_ResNet50
+#> rack                [██████████████████████████████████████  ] 0.9586% 
+#> fflorescence        [                                        ] 0.0056% 
+#> xposedReinforcement [                                        ] 0.0018% 
+#> eneral              [                                        ] 0.0060% 
+#> oDefect             [                                        ] 0.0129% 
+#> ustStaining         [                                        ] 0.0044% 
+#> caling              [                                        ] 0.0005% 
+#> palling             [                                        ] 0.0085% 
+#> nference time (CPU): 44.26 ms
+```
+
+### Metrics
+
+```python
+#NotImplemented
+```
+
 
 # Misc
 
