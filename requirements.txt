@@ -10,3 +10,4 @@ tqdm
 matplotlib
 opencv-python-headless # opencv-python
 efficientnet_pytorch
+torchmetrics
