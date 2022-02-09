@@ -112,7 +112,7 @@ from bikit.metrics import EMR_mt, Recalls_mt
 myemr = EMR_mt(use_logits=False)
 myrecalls = Recalls_mt()
 
-# data
+# fake data
 preds0  = torch.tensor([[.9, 0.1, 0.9, 0.1, 0.9, 0.1], 
                        [.8, 0.2, 0.9, 0.2, 0.9, 0.2], 
                        [.7, 0.9, 0.2 , 0.2, 0.2 , 0.2]])
@@ -122,7 +122,7 @@ preds1 = torch.tensor([[.0, 0.1, 0.9, 0.1, 0.9, 0.1],
 target = torch.tensor([[1, 0, 1, 0, 0, 1], 
                       [1, 1, 0, 0, 1, 0], 
                       [1, 1, 0, 1, 0, 1]])
-#batch 0
+# batch 0
 myemr(preds0, target), myrecalls(preds0, target)
 print(myemr.compute(), myrecalls.compute())
 
@@ -155,20 +155,18 @@ model, metadata = load_model("MCDS_ResNet50")
 ```python
 from bikit.utils import load_model, get_metadata, load_img_from_url
 from bikit.models import make_prediction
-import requests
-from PIL import Image
 
-img = load_img_from_url("https://github.com/phiyodr/bridge-inspection-toolkit/raw/develop/bikit/data/11_001990.jpg")
-model, metadata = load_model("MCDS_ResNet50")
+img = load_img_from_url("https://github.com/phiyodr/building-inspection-toolkit/raw/master/bikit/data/11_001990.jpg")
+model, metadata = load_model("MCDS_ResNet50", add_metadata=True)
 prob, pred = make_prediction(model, img, metadata, print_predictions=True, preprocess_image=True)
-#> Crack                [██████████████████████████████████████  ] 0.9586% 
-#> Efflorescence        [                                        ] 0.0056% 
-#> ExposedReinforcement [                                        ] 0.0018% 
-#> General              [                                        ] 0.0060% 
-#> NoDefect             [                                        ] 0.0129% 
-#> RustStaining         [                                        ] 0.0044% 
-#> Scaling              [                                        ] 0.0005% 
-#> Spalling             [                                        ] 0.0085% 
+#> Crack                [██████████████████████████████████████  ]  95.86% 
+#> Efflorescence        [                                        ]   0.56% 
+#> ExposedReinforcement [                                        ]   0.18% 
+#> General              [                                        ]   0.60% 
+#> NoDefect             [                                        ]   1.29% 
+#> RustStaining         [                                        ]   0.44% 
+#> Scaling              [                                        ]   0.05% 
+#> Spalling             [                                        ]   0.85% 
 #> Inference time (CPU): 44.26 ms
 ```
 
