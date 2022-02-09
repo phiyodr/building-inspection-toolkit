@@ -150,7 +150,7 @@ def _print_prediction_bar(prediction_probability, label):
     bar = '█' * int(bar_size * prediction_probability)
     bar = bar + '' * int(bar_size * (1-prediction_probability))
 
-    sys.stdout.write(f"{label.ljust(20)} [{bar:{bar_size}s}] {prediction_probability:>.4f}% \n")
+    sys.stdout.write(f"{label.ljust(20)} [{bar:{bar_size}s}] {prediction_probability*100:>6.2f}% \n")
     sys.stdout.flush()
 
 def make_prediction(model, img, metadata, print_predictions=True, preprocess_image=True):
