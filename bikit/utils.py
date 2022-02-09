@@ -17,7 +17,7 @@ import cv2
 import requests
 from io import BytesIO
 
-from .models import DaclNet
+from models import DaclNet
 import torch
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -188,7 +188,7 @@ def download_dataset(name, cache_dir='~/.cache/bikit', rm_zip_or_rar=False, forc
     # Set defaults
     data_dict = datasets[name]
     download_name = data_dict["download_name"]
-    if name == "codebrim-classif-balanced":
+    if name in ["codebrim-classif-balanced"]:
         cache_full_dir = os.path.join(cache_dir, download_name, "classification_dataset_balanced")
     #elif name == "codebrim-classif-balanced":
     #    cache_full_dir = os.path.join(cache_dir, download_name, "classification_dataset")
@@ -207,6 +207,7 @@ def download_dataset(name, cache_dir='~/.cache/bikit', rm_zip_or_rar=False, forc
     file_type = data_dict['original_names'][0].split(".")[-1]
     checksums = data_dict['checksums']
     names = data_dict['original_names']
+    #import pdb; pdb.set_trace()
 
     # Download if not available
     if not os.path.exists(cache_full_dir):
@@ -218,7 +219,7 @@ def download_dataset(name, cache_dir='~/.cache/bikit', rm_zip_or_rar=False, forc
         for idx, (url, file_name, checksum, size) in enumerate(zip(urls, names, checksums, sizes)):
             print(f"Start to download file {idx + 1} of {len(urls)} with {size}.")
             cache_zip = os.path.join(cache_full_dir, file_name)
-            if name in ["codebrim-classif-balanced", "codebrim-classif", "sdnet_bikit", "sdnet_bikit_binary"]:
+            if name in ["codebrim-classif-balanced", "codebrim-classif", "sdnet_bikit", "sdnet_bikit_binary", "dacl1k"]:
                 gdrive_download(total_size=size, download_id=url, full_cache_dir=cache_zip)
             else:
                 if name == "sdnet":
@@ -350,7 +351,21 @@ def _save_response_content(response, destination, totalsize):
 
 
 if __name__ == "__main__":
-    test_data, test_meta = False, True
+    name = "dacl1k"
+    download_dataset(name)
+    from bikit.datasets import BikitDataset  # Deprecated: from bikit.datasets.data import BikitDataset
+    from torch.utils.data import DataLoader
+    from torchvision import transforms
+    my_transform = transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()])
+    train_dataset = BikitDataset(name, split="train", transform=my_transform, return_type="pt")
+    train_loader = DataLoader(dataset=train_dataset, batch_size=64, shuffle=False, num_workers=0)
+
+    # Use it in your training loop
+    for i, (imgs, labels) in enumerate(train_dataset):
+        print(i, imgs.shape, labels.shape)
+        break
+
+    test_data, test_meta = False, False
     if test_data:
         name = "codebrim-classif"
 
