@@ -17,7 +17,7 @@ import cv2
 import requests
 from io import BytesIO
 
-from models import DaclNet
+from .models import DaclNet
 import torch
 
 pp = pprint.PrettyPrinter(indent=4)
