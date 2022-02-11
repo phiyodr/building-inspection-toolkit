@@ -202,5 +202,18 @@
                  "split_column" : "split_type",
                  "splits": ["train", "val", "test"],
                  "class_names": ["NoDamage", "Crack", "Efflorescence", "Spalling", "BarsExposed", "Rust"],
-                 "num_classes": 6}                            
+                 "num_classes": 6},  
+  "meta4+dacl1k": {"description":  "[DEMO-VERSION] 6-class multi-target dataset.",
+                 "download_name": "",
+                 "publications": ["TODO"],
+                 "license": "TODO",
+                 "urls" : [""],
+                 "original_names": [""],
+                 "checksums": ["TODO"],
+                 "sizes": [""],
+                 "n_samples": 73054,
+                 "split_column" : "split_type",
+                 "splits": ["train", "val", "test"],
+                 "class_names": ["NoDamage", "Crack", "Efflorescence", "Spalling", "BarsExposed", "Rust"],
+                 "num_classes": 6}                                        
 }
