@@ -30,16 +30,14 @@ with open(os.path.join(bikit_path, "data/datasets.json")) as f:
 DEMO_DATASETS = {"test_zip": {"description": "",
                               "download_name": "test_zip",
                               "license": "",
-                              "urls": [
-                                  "https://github.com/phiyodr/building-inspection-toolkit/raw/master/bikit/data/test_rar.rar"],
+                              "urls": ["https://github.com/phiyodr/building-inspection-toolkit/raw/master/bikit/data/test_zip.zip"],
                               "original_names": ["test_zip.zip"],
                               "checksums": ["63b3722e69dcf7e14c879411c1907dae"],
                               "sizes": ["0.2 MB"]},
                  "test_rar": {"description": "",
                               "download_name": "test_rar",
                               "license": "",
-                              "urls": [
-                                  "https://github.com/phiyodr/building-inspection-toolkit/raw/master/bikit/data/test_zip.zip"],
+                              "urls": ["https://github.com/phiyodr/building-inspection-toolkit/raw/master/bikit/data/test_rar.rar"],
                               "original_names": ["test_rar.rar"],
                               "checksums": ["c020266280b076ff123294ae51af2b11"],
                               "sizes": ["3.7 MB"]}}
