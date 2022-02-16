@@ -21,25 +21,21 @@ efnet_dict = {'b0': 224, 'b1': 240, 'b2': 260, 'b3': 300,
 
 class DaclNet(nn.Module):
     def __init__(self, base_name, resolution, hidden_layers, num_class, drop_prob=0.2, freeze_base=True):
-        ''' Builds a network with a base model and a classifier with arbitrary hidden layers.
+        ''' 
+        Builds a network separated into a base model and classifier with arbitrary hidden layers.
         
-            Attributes
-            ---------
-            base_name: string, basemodel for the NN
-            resolution: resolution of the input-images, example: 224, 240...(look efnet_dic), Only needed for EfficientNet
-            hidden_layers: list of integers, the sizes of the hidden layers
-            num_class: integer, size of the output layer according to the number of classes
-            drop_prob: float, dropout probability
-            freeze_base: boolean, choose if you want to freeze the parameters of the base model
+        Attributes
+        ---------
+        base_name: string, basemodel for the NN
+        resolution: resolution of the input-images, example: 224, 240...(look efnet_dic), Only needed for EfficientNet
+        hidden_layers: list of integers, the sizes of the hidden layers
+        drop_prob: float, dropout probability
+        freeze_base: boolean, choose if you want to freeze the parameters of the base model
+        num_class: integer, size of the output layer according to the number of classes
 
-            Example
-            ---------
-            model = Network(base_name='resnet', resolution=224, hidden_layers=[128, 64, 32], num_class=6, drop_prob=0.6, freeze_base=True)
-
-            Note
-            ---------
-            -print(efficientnet) -> Last module: (_swish): MemoryEfficientSwish() and the last fc-layers will be displayed
-             But: Won't be called during forward due to: "self.base.extract_features"!
+        Example
+        ---------
+        model = Network(base_name='efficientnet', resolution=224, hidden_layers=[32,16], num_class=6, drop_prob=0.2, freeze_base=True)
         '''
         super(DaclNet, self).__init__()
         self.base_name = base_name
@@ -115,12 +111,25 @@ class DaclNet(nn.Module):
             pass
         
     def forward(self, input_batch):
-        '''
-        Every model uses 2d-Average-Pooling with output_size=1 after the feature extraction and before flattening
-        The pooling layer of ResNet50 and MobileNetV3 was kept in the sequential -> Doesn't have to be called in forward!
+        ''' 
+        Performs the feed-forward process for the input batch and return the logits
+
+        Arguments
+        ---------
+        input_batch: torch.Tensor, Multidimensional array holding elements of datatype: torch.float32, 
+                     it's shape is: [1, 3, 224, 224] according to N x C x H x W,
+                     The input batch carries all pixel values from the images inside teh batch
+        Note
+        ---------
+        Every model uses 2d-Average-Pooling with output_size=1 after the feature extraction or rather before flattening.
+        The pooling layer of ResNet50 and MobileNetV3 was kept in the squential -> Doesn't have to be called in forward!
         EffNet had to be implemented with the AdaptiveAvgpool2d in this forward function because of missing pooling when
         calling: "effnet.extract_features(input_batch)"
-        Also mobilenetV2 needs the manually added pooling layer
+        Also mobilenetV2 needs the manually added pooling layer.
+
+        Returns
+        ---------
+        logits: torch.Tensor, shape: [1, num_class], datatype of elements: float
         '''
         # Check if model is one that needs Pooling layer
         if self.base_name in ['efficientnet', 'mobilenetv2']:
