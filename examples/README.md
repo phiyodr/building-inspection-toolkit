@@ -2,12 +2,12 @@
 
 | multi-target    | Link |
 |-----------------|------|
-| Inference       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://wandb.me/pytorch-colab) |
+| Inference       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/phiyodr/building-inspection-toolkit/blob/master/examples/colab/multi_target.ipynb) |
 
 
 ## Available Models
 
-The available models are displayed in the table below. They are sorted according to the Exact Match Ratio (EMR), which is the most important metric for multi-target classification. Further information reagarding the models and the metrics may be found on [dacl.ai](https://dacl.ai/bikit.html) and in the [*bikit*-paper](https://arxiv.org/abs/2202.07012).
+The currently available models are displayed in the table below. They are sorted according to the Exact Match Ratio (EMR), which is the most important metric for multi-target classification. Further information reagarding the models and the metrics may be found on [dacl.ai](https://dacl.ai/bikit.html) and in the [*bikit*-paper](https://arxiv.org/abs/2202.07012).
 
 | Modelname                             | Dataset                   | EMR   | F1   | Tag          |CorrespNameOnDaclAI*  |
 |---------------------------------------|---------------------------|-------|------|--------------|----------------------|
