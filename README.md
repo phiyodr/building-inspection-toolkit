@@ -10,7 +10,7 @@
 
 
 
-**Building Inspection Toolkit** helps you with machine learning projects in the field for damage detection for building structures currenlty with a focus on bridges.
+**Building Inspection Toolkit** helps you with machine learning projects in the field of damage recognition for building structures currenlty with a focus on bridges.
 
 * [DataHub](#data): It contains currated open-source datasets, with fix train/val/test splits (as this is often missing) and cleaned annotations. It is build for [PyTorch](https://pytorch.org/). 
 * [Metrics](#metrics): We define useful metrics you can use and report to make comparability easier.
@@ -40,7 +40,7 @@ For some datasets different versions exists. This may be due to the fact that th
 
 **Splits** 
 
-We provide carefully selected *train/val/test* splits. We introduce splits, when they are not available or update spits where we think this is useful. 
+We provide carefully selected *train/val/test* splits. We introduce splits, when they are not available or update splits where we think this is useful. 
 
 **Overview**
 
@@ -50,13 +50,13 @@ We provide carefully selected *train/val/test* splits. We introduce splits, when
 | `cds`                       | *Original dataset* with bikit's *train/val/test* splits         
 | `bcd`                       | *Original dataset* with modified *train/val/test* splits (original train was splitted into *train/val*)      
 | `sdnet`                     | *Original dataset* with bikit's *train/val/test* splits; Many wrong labels    
-| `sdnet_binary`              |  Many wrong labels; Binaried version of sdnet: crack, no crack
+| `sdnet_binary`              |  Many wrong labels; Binarized version of sdnet: crack, no crack
 | `sdnet_bikit`               |  Cleaned wrong labels     
-| `sdnet_bikit_binary`        |  Cleaned wrong labels; Binaried version of sdnet: crack, no crack             
+| `sdnet_bikit_binary`        |  Cleaned wrong labels; Binarized version of sdnet: crack, no crack             
 | `mcds_Bukhsh`               |  Bukhsh et al. create a 10-class dataset out of the 3-step dataset from Hüthwohl et al. (with same wrong labels); With bikit's *train/val/test* splits  |
-| `mcds_bikit`                |  We create a 8-class dataset from Hüthwohl et al. which prevent wrong labels with bikit's *train/val/test* splits . 
+| `mcds_bikit`                |  We create a 8-class dataset from Hüthwohl et al. which prevent wrong labels with bikit's *train/val/test* splits. 
 | `codebrim-classif-balanced` | *Original dataset* with original *train/val/test* splits: Underrepresented classes are oversampled.  |
-| `codebrim-classif`          | *Original dataset* with original *train/val/test* splits |
+| `codebrim-classif`          | *Original dataset* with original *train/val/test* splits. |
 | `meta3`		        	  |  6-class multi-target dataset based on bcd, codebrim-classif, and mcds_bikit. |
 | `meta4`       		   	  |  6-class multi-target dataset based on bcd, codebrim-classif, mcds_bikit, and sdnet_bikit_binary.  |
 
