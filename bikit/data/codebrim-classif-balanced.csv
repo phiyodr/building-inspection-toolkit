@@ -1,4 +1,4 @@
-img_name,Background,Crack,Spallation,Efflorescence,ExposedBars,CorrosionStain,img_path,split_type,type,class_count
+img_name,NoDamage,Crack,Spalling,Efflorescence,BarsExposed,Rust,img_path,split_type,type,CLASSES_N
 image_0000001_crop_0000001.png,1,0,0,0,0,0,codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000001.png,train,background,1
 image_0000001_crop_0000002.png,1,0,0,0,0,0,codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000002.png,train,background,1
 image_0000001_crop_0000003.png,1,0,0,0,0,0,codebrim-classif-balanced/classification_dataset_balanced/train/background/image_0000001_crop_0000003.png,train,background,1

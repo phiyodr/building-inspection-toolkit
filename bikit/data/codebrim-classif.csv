@@ -1,4 +1,4 @@
-img_name,img_path,split_type,Healthy,Crack,Spallation,Efflorescence,BarsExposed,CorrosionStain,TOTAL,CLASSES
+img_name,img_path,split_type,NoDamage,Crack,Spalling,Efflorescence,BarsExposed,Rust,CLASSES_N,CLASSES_STRING
 image_0000230_crop_0000002.png,codebrim-classif/classification_dataset/train/defects/image_0000230_crop_0000002.png,train,0,0,1,0,0,0,1,S
 image_0000811_crop_0000003.png,codebrim-classif/classification_dataset/train/defects/image_0000811_crop_0000003.png,train,0,0,0,0,0,1,1,C
 image_0000601_crop_0000002.png,codebrim-classif/classification_dataset/train/defects/image_0000601_crop_0000002.png,train,0,0,0,1,0,0,1,E
