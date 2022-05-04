@@ -3,12 +3,12 @@ import setuptools
 with open("README.md", "r") as file:
     long_description = file.read()
 
-with open('requirements.txt') as file:
-    required = file.read().splitlines()
+#with open("requirements.txt") as file:
+#    required = file.read().splitlines()
     
 setuptools.setup(
-    name="bikit",
-    version="0.1.4",
+    name="building-inspection-toolkit",
+    version="0.1.6",
     author="Philipp J. Roesch, Johannes Flotzinger",
     author_email="philipp.roesch@unibw.de, johannes.flotzinger@unibw.de",
     description="Building Inspection Toolkit",
@@ -24,6 +24,20 @@ setuptools.setup(
     python_requires='>=3.6',
     package_data={
         # If any package contains *.txt or *.rst files, include them:
-        "": ["*.csv", "*.json"]},
-    install_requires=required
+        "": ["*.txt", "*.csv", "*.json"]},
+    install_requires=[
+        "numpy > 1.20"
+        "requests"
+        "torch"
+        "torchvision"
+        "pandas"
+        "Pillow"
+        "patool"
+        "pathlib"
+        "tqdm"
+        "matplotlib"
+        "opencv-python-headless" # opencv-python
+        "efficientnet_pytorch"
+        "torchmetrics"
+        ]
     )
