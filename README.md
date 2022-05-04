@@ -10,13 +10,9 @@
 
 
 
-<<<<<<< HEAD
-**Building Inspection Toolkit** helps you with machine learning projects in the field of damage recognition on built structures, currenlty with a focus on bridges.
-=======
-**Building Inspection Toolkit** helps you with machine learning projects in the field of damage recognition for built structures, currenlty with a focus on bridges made of reinforced concrete.
->>>>>>> 5fca612bdb429facf1e0c15333a879961a5f37b5
+**Building Inspection Toolkit** helps you with machine learning projects in the field of damage recognition on built structures, currenlty with a focus on bridges made of reinforced concrete.
 
-* [DataHub](#data): It contains currated open-source datasets, with fix train/val/test splits (as this is often missing) and cleaned annotations. It is build for [PyTorch](https://pytorch.org/). 
+* [DataHub](#data): It contains curated open-source datasets, with fix train/val/test splits (as this is often missing) and cleaned annotations. It is build for [PyTorch](https://pytorch.org/). 
 * [Metrics](#metrics): We define useful metrics you can use and report to make comparability easier.
 * [Pre-trained Models](#models): We provide strong baseline models for different datasets. See [bikit-models](https://github.com/phiyodr/bikit-models) for more details.
 
