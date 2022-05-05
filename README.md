@@ -6,12 +6,13 @@
 [![GitHub license](https://img.shields.io/github/license/phiyodr/bridge-inspection-toolkit.svg)](https://github.com/phiyodr/bridge-inspection-toolkit/blob/master/LICENSE) 
 [![GitHub tag](https://img.shields.io/github/tag/phiyodr/bridge-inspection-toolkit.svg)](https://GitHub.com/phiyodr/bridge-inspection-toolkit/tags/)
 [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fshields.io)](https://twitter.com/dacl_ai)
-
-**Building Inspection Toolkit** helps you with machine learning projects in the field of damage recognition on built structures, currenlty with a focus on bridges.
 
 
-* [DataHub](#data): It contains currated open-source datasets, with fix train/val/test splits (as this is often missing) and cleaned annotations. It is build for [PyTorch](https://pytorch.org/). 
+
+
+**Building Inspection Toolkit** helps you with machine learning projects in the field of damage recognition on built structures, currenlty with a focus on bridges made of reinforced concrete.
+
+* [DataHub](#data): It contains curated open-source datasets, with fix train/val/test splits (as this is often missing) and cleaned annotations. It is build for [PyTorch](https://pytorch.org/). 
 * [Metrics](#metrics): We define useful metrics you can use and report to make comparability easier.
 * [Pre-trained Models](#models): We provide strong baseline models for different datasets. See [bikit-models](https://github.com/phiyodr/bikit-models) for more details.
 
