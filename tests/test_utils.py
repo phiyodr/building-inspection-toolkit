@@ -30,7 +30,7 @@ def test_download_dataset():
     # download_dataset(name='demo_zip', cache_dir=cache_dir)
     download_dataset(name='test_rar', cache_dir=cache_dir)
     assert os.path.exists(cache_dir / "test_rar/test_rar.rar")
-    assert os.path.exists(cache_dir / "multi_classifier_data") # from test_rar.rar
+    assert os.path.exists(cache_dir / "test_rar/classification_dataset_balanced")
 
     download_dataset(name='test_zip', cache_dir=cache_dir)
     assert os.path.exists(cache_dir / "test_zip/test_zip.zip")
