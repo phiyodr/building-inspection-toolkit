@@ -1,12 +1,12 @@
 # Building Inspection Toolkit
 
 
-[![build](https://travis-ci.com/phiyodr/bridge-inspection-toolkit.svg?branch=master)](https://travis-ci.com/phiyodr/bridge-inspection-toolkit) 
-[![codecov](https://codecov.io/gh/phiyodr/bridge-inspection-toolkit/branch/master/graph/badge.svg?token=U685JTKNLC)](https://codecov.io/gh/phiyodr/bridge-inspection-toolkit)
-[![GitHub license](https://img.shields.io/github/license/phiyodr/bridge-inspection-toolkit.svg)](https://github.com/phiyodr/bridge-inspection-toolkit/blob/master/LICENSE) 
-[![GitHub tag](https://img.shields.io/github/tag/phiyodr/bridge-inspection-toolkit.svg)](https://GitHub.com/phiyodr/bridge-inspection-toolkit/tags/)
+[![build](https://travis-ci.com/phiyodr/building-inspection-toolkit.svg?branch=master)](https://travis-ci.com/phiyodr/building-inspection-toolkit)
+[![codecov](https://codecov.io/gh/phiyodr/building-inspection-toolkit/branch/master/graph/badge.svg?token=U685JTKNLC)](https://codecov.io/gh/phiyodr/building-inspection-toolkit)
+[![GitHub license](https://img.shields.io/github/license/phiyodr/building-inspection-toolkit.svg)](https://github.com/phiyodr/building-inspection-toolkit/blob/master/LICENSE)
+[![GitHub tag](https://img.shields.io/github/tag/phiyodr/building-inspection-toolkit.svg)](https://GitHub.com/phiyodr/building-inspection-toolkit/tags/)
 [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40dacl_ai)](https://twitter.com/dacl_ai)
 
 
 
