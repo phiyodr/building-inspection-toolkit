@@ -196,7 +196,7 @@
                  "original_names": [""],
                  "checksums": ["TODO"],
                  "sizes": [""],
-                 "n_samples": -1,
+                 "n_samples": 11536,
                  "split_column" : "split_type",
                  "splits": ["train", "val", "test"],
                  "class_names": ["NoDamage", "Crack", "Efflorescence", "Spalling", "BarsExposed", "Rust"],
