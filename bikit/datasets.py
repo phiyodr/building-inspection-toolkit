@@ -14,7 +14,19 @@ from tqdm import tqdm
 
 
 class BikitDataset(Dataset):
-    """PyTorch Dataset for all Datasets"""
+    """PyTorch Dataset for all Datasets.
+    
+    Args:
+        name: str, Dataset name.
+        split: str, Use 'train', 'val' or 'test.
+        transform: bool, Torch transformation for image data (this depends on your CNN).
+        img_type: str, Load image as PIL or CV2.
+        return_type: str, Returns Torch tensor ('pt') or numpy ('np').
+        cache_dir: str, Path to cache_dir.
+        load_all_in_mem: bool, Whether or not to load all image data into memory (this depends on the dataset size and
+            your memory). Loading all in memory can speed up your training.
+        devel_mode: bool, If True then only grab the first 100 datapoints
+    """
     #bikit_path = Path(dirname(dirname(__file__)))
     #bikit_path = Path(os.path.join(bikit_path, "bikit"))
     bikit_path = Path(os.path.join(dirname(dirname(__file__)), "bikit"))
@@ -24,18 +36,6 @@ class BikitDataset(Dataset):
 
     def __init__(self, name, split=None, cache_dir=None, transform=None, img_type="pil", return_type="pt",
                  load_all_in_mem=False, devel_mode=False):
-        """
-
-        :param name: Dataset name.
-        :param split: Use 'train', 'val' or 'test.
-        :param transform: Torch transformation for image data (this depends on your CNN).
-        :param img_type: Load image as PIL or CV2.
-        :param return_type: Returns Torch tensor ('pt') or numpy ('np').
-        :param cache_dir: Path to cache_dir.
-        :param load_all_in_mem: Whether or not to load all image data into memory (this depends on the dataset size and
-            your memory). Loading all in memory can speed up your training.
-        :param devel_mode:
-        """
         assert img_type.lower() in ["pil", "cv2"], f"Not a valid imgage type. Use something from ['pil','cv2']."
         if img_type == "pil":
             self.img_loader = pil_loader
@@ -82,7 +82,11 @@ class BikitDataset(Dataset):
 
     def __getitem__(self, index):
         """Returns image as torch.Tensor and label as torch.Tensor with dimension (bs, num_classes)
-        where 1 indicates that the label is present."""
+        where 1 indicates that the label is present.
+        
+        Args:
+        index: int, index of item that should be returned
+        """
         data = self.df.iloc[index]
 
         # Get image

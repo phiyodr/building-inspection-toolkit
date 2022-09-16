@@ -44,14 +44,14 @@ DEMO_DATASETS = {"test_zip": {"description": "",
 
 
 def pil_loader(path):
-    """Outputs an PIL Image object"""
+    """Outputs an PIL Image object."""
     # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
     with open(path, 'rb') as f:
         img = Image.open(f)
         return img.convert('RGB')
 
 def cv2_loader(path):
-    """Outputs an numpy.ndarray object"""
+    """Outputs an numpy.ndarray object."""
     # Can only use str not pathlib.PosixPath
     return cv2.cvtColor(cv2.imread(str(path)), cv2.COLOR_BGR2RGB)
 
@@ -62,11 +62,13 @@ def load_img_from_url(img_url):
 ########## Model ##########
 
 def list_models(verbose=True, cache_dir='~/.cache/bikit-models', force_redownload=False):
-    """
-    List all datasets available
+    """List all datasets available.
 
-    :param verbose: Print datasets
-    :return: Return dictionary containing datasets name, url and original name.
+    Args:
+    verbose: Print datasets
+    
+    Returns:
+    Return dictionary containing datasets name, url and original name.
     """
     models_metadata = get_metadata(cache_dir, force_redownload)
     if verbose:
@@ -112,7 +114,7 @@ def read_metadata(cache_dir='~/.cache/bikit-models'):
     return metadata
 
 def get_metadata(cache_dir='~/.cache/bikit-models', force_redownload=False):
-    "Return metadata.json as dict."
+    """Return metadata.json as dict."""
     filename = os.path.join(os.path.expanduser(cache_dir), "metadata.json")
     if not os.path.isfile(filename) or force_redownload:
         _ = download_metadata(cache_dir, force_redownload)
@@ -144,11 +146,13 @@ def load_model(name, add_metadata=True, cache_dir="~/.cache/bikit-models", force
 ########## Datasets ##########
 
 def list_datasets(verbose=True):
-    """
-    List all datasets available
+    """List all datasets available.
 
-    :param verbose: Print datasets
-    :return: Return dictionary containing datasets name, url and original name.
+    Args:
+    verbose: Print datasets
+
+    Returns:
+    Return dictionary containing datasets name, url and original name.
     """
     datasets = DATASETS
     if verbose:
@@ -156,12 +160,11 @@ def list_datasets(verbose=True):
     return datasets
 
 def download_dataset(name, cache_dir='~/.cache/bikit', rm_zip_or_rar=False, force_redownload=False):
-    """
-    Download dataset if not on cache folder.
+    """Download dataset if not on cache folder.
 
-    :param name: Dataset name
-    :param cache_dir: Cache directory
-    :return:
+    Args:
+    name: Dataset name
+    cache_dir: Cache directory
     """
     if "test" in name:
         datasets = DEMO_DATASETS
@@ -271,9 +274,9 @@ def _progressbar(cur, total=100):
 
 
 def _schedule(blocknum, blocksize, totalsize):
-    """
-    Source: https://www.programmersought.com/article/14355722336/
+    """Source: https://www.programmersought.com/article/14355722336/
 
+    Args:
     blocknum: currently downloaded block
     blocksize: block size for each transfer
     totalsize: total size of web page files
@@ -299,11 +302,12 @@ def _md5(filename):
 
 
 def gdrive_download(total_size, download_id, full_cache_dir=""):
-    """
-    Download the codebrim_classif_dataset
-    :param total_size: file size of the zipfile from the json file
-    :param download_id: list of gdrive ids to download
-    :param full_cache_dir: Cache directory
+    """Download the codebrim_classif_dataset.
+
+    Args:
+    total_size: file size of the zipfile from the json file
+    download_id: list of gdrive ids to download
+    full_cache_dir: Cache directory
     """
 
     url = "https://docs.google.com/uc?export=download"
@@ -351,7 +355,7 @@ def _save_response_content(response, destination, totalsize):
 if __name__ == "__main__":
     name = "dacl1k"
     download_dataset(name)
-    from bikit.datasets import BikitDataset  # Deprecated: from bikit.datasets.data import BikitDataset
+    from bikit.datasets import BikitDataset 
     from torch.utils.data import DataLoader
     from torchvision import transforms
     my_transform = transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()])

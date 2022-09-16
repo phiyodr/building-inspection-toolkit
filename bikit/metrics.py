@@ -3,6 +3,14 @@ from torchmetrics import Metric
 from torchmetrics import Recall
 
 class EMR_mt(Metric):
+    """Exact match ratio (EMR)-class to determine the share of completely correct classified images.
+
+    Args:
+        use_logits: bool, apply threshold (0.5) on probabilities
+        dist_sync_on_step: If metric state should synchronize on ``forward()``
+    Note:
+        Further info from torchmetrics' Metric-class.
+    """
     def __init__(self, use_logits=True, dist_sync_on_step=False):
         super().__init__(dist_sync_on_step=dist_sync_on_step)
 
@@ -11,8 +19,7 @@ class EMR_mt(Metric):
         self.add_state("total", default=torch.tensor(0), dist_reduce_fx="sum")
 
     def update(self, preds: torch.Tensor, targets: torch.Tensor):
-        #assert preds.shape == target.shape
-        #print(preds.shape, targets.shape)
+        """Cumulate results."""
         if self.use_logits:
             y_hat = (preds > 0.0)
         else:
@@ -29,17 +36,26 @@ class EMR_mt(Metric):
         #print("+"*50)
 
     def compute(self):
+        """Compute EMR by dividing exact-matches through total amount of datapoints/images."""
         return self.correct.float() / self.total
 
 
 class Recalls_mt(Recall):
-    def __init__(self, average='none', num_classes=6):
-        """ Initalisieren über Eltern-Klasse """
-        super().__init__(average=average, num_classes=num_classes)    
+    """Recall inherited from torchmetric's Recall.
+
+    Args:
+        num_class: int, amount of classes
+        average: bool, average Recall "over" damage-classes
+
+    Note:
+        Further info from torchmetrics' Recall-class.
+    """
+    def __init__(self, num_class, average='none'):
+        super().__init__(average=average, num_classes=num_class)    
 
 if __name__ == '__main__':
     myemr = EMR_mt(use_logits=False)
-    myrecalls = Recalls_mt()
+    myrecalls = Recalls_mt(num_class=6)
 
     # data
     preds0  = torch.tensor([[.9, 0.1, 0.9, 0.1, 0.9, 0.1], 

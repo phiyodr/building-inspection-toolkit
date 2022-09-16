@@ -8,9 +8,6 @@ from efficientnet_pytorch.utils import MemoryEfficientSwish
 import time
 
 from PIL import Image
-import matplotlib.pyplot as plt
-import json
-from pathlib import Path
 import sys
 
 # Dict to find the suiting EfficientNet model according to the resolution of the input-images:
@@ -21,11 +18,9 @@ efnet_dict = {'b0': 224, 'b1': 240, 'b2': 260, 'b3': 300,
 
 class DaclNet(nn.Module):
     def __init__(self, base_name, resolution, hidden_layers, num_class, drop_prob=0.2, freeze_base=True):
-        ''' 
-        Builds a network separated into a base model and a classifier with arbitrary hidden layers.
+        """Builds a network separated into a base model and a classifier with arbitrary hidden layers.
         
-        Attributes
-        ---------
+        Args:
         base_name: string, basemodel for the NN
         resolution: resolution of the input-images, example: 224, 240...(look efnet_dic), Only needed for EfficientNet
         hidden_layers: list of integers, the sizes of the hidden layers
@@ -33,10 +28,9 @@ class DaclNet(nn.Module):
         freeze_base: boolean, choose if you want to freeze the parameters of the base model
         num_class: integer, size of the output layer according to the number of classes
 
-        Example
-        ---------
+        Example:
         model = Network(base_name='efficientnet', resolution=224, hidden_layers=[32,16], num_class=6, drop_prob=0.2, freeze_base=True)
-        '''
+        """
         super(DaclNet, self).__init__()
         self.base_name = base_name
         self.resolution = resolution
@@ -110,26 +104,23 @@ class DaclNet(nn.Module):
             pass
         
     def forward(self, input_batch):
-        ''' 
-        Performs the feed-forward process for the input batch and returns the logits
+        """Performs the feed-forward process for the input batch and returns the logits
 
-        Arguments
-        ---------
-        input_batch: torch.Tensor, Multidimensional array holding elements of datatype: torch.float32, 
+        Args:
+        input_batch: tensor, Multidimensional array holding elements of datatype: torch.float32, 
                      it's shape is: [1, 3, 224, 224] according to N x C x H x W,
                      The input batch carries all pixel values from the images inside the batch
-        Note
-        ---------
+        
+        Note:
         Every model uses 2d-Average-Pooling with output_size=1 after the feature extraction or rather before flattening.
         The pooling layer of ResNet50 and MobileNetV3 was kept in the sequential -> Doesn't have to be called in forward!
         EffNet had to be implemented with the AdaptiveAvgpool2d in this forward function because of missing pooling when
         calling: "effnet.extract_features(input_batch)"
         Also MobileNetV2 needs the manually added pooling layer.
 
-        Returns
-        ---------
+        Returns:
         logits: torch.Tensor, shape: [1, num_class], datatype of elements: float
-        '''
+        """
         # Check if model is one that needs Pooling layer
         if self.base_name in ['efficientnet', 'mobilenetv2']:
             if self.base_name == 'efficientnet':
@@ -144,7 +135,7 @@ class DaclNet(nn.Module):
             x = self.base(input_batch)
         
         x = self.dropout(x)         # Originally only in EfficientNet a Dropout is aplied after last bottleneck, in others not!  
-        x = x.view(x.size(0), -1)   # Or: x.flatten(start_dim=1)
+        x = x.view(x.size(0), -1)   
         if self.hidden_layers:    
             for i,each in enumerate(self.classifier):
                 if i < len(self.classifier)-1:
@@ -156,10 +147,21 @@ class DaclNet(nn.Module):
         else:
             logits = self.classifier(x)
 
-        return logits
+        return logits       
 
 
 def preprocess_img(img):
+    """Scales, crops and normalizes an image for a dacl-model and returns a Torch Tensor
+    Args:
+        img_path: string, filepath of image
+
+    Returns:
+        Tensor (torch.float32 of shape: [1, 3, 224, 224])
+    
+    Example: 
+		process_img('test/1/image_06743.jpg')
+    """
+
     if isinstance(img, str):
         img = Image.open(img)
     img = img.resize((224,224))
@@ -183,6 +185,20 @@ def _print_prediction_bar(prediction_probability, label):
     sys.stdout.flush()
 
 def make_prediction(model, img, metadata, print_predictions=True, preprocess_image=True):
+    """Predicts defect-classes that appear on a given image with a given model
+    
+    Args:
+        model: object from DaclNet(), CNN instantiated from DaclNet-class 
+        img: string or tensor or PIL image, img (torch.float32 of shape: [1, 3, H, W])
+        metadata: dict, maps indices from the result vector to label-names and includes further info
+        print_predictions: bool, print result
+        preprocess_image: bool, preprocess input image
+
+    Returns:
+        probabilities: Array (float32) of shape: [num_class], activated (sigmoid) logits
+        predictionsTensor: Array (bool) of shape: [num_class], binarized probabilities with threshold of 0.5
+
+    """
     # Read image if it is a string
     if isinstance(img, str):
         img = Image.open(img)
@@ -208,9 +224,9 @@ def make_prediction(model, img, metadata, print_predictions=True, preprocess_ima
     return probabilities, predictions
 
 if __name__ == "__main__":
-    from bikit.utils import load_model, get_metadata
-    img_path = "/home/philipp/Documents/MyLocalProjects/dacl_project/bridge-inspection-toolkit/bikit/data/11_001990.jpg"
-    model_name = "MCDS_MobileNetV3Large"
-
+    from bikit.utils import load_model, load_img_from_url
+    img = load_img_from_url("https://github.com/jfltzngr/dacl-demo/blob/main/assets/DamageExamples/11_010332.jpg?raw=true")
+    model_name = "CODEBRIMbalanced_ResNet50_hta"
     model, metadata = load_model(model_name)
-    make_prediction(model, img_path, metadata)
+    make_prediction(model, img, metadata)
+    img.show()
