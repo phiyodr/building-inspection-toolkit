@@ -7,7 +7,7 @@
 [![GitHub tag](https://img.shields.io/github/tag/phiyodr/building-inspection-toolkit.svg)](https://GitHub.com/phiyodr/building-inspection-toolkit/tags/)
 [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40dacl_ai)](https://twitter.com/dacl_ai)
-
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/phiyodr/building-inspection-toolkit/blob/master/notebooks/bikit_demo_v0_1_6.ipynb)
 
 
 **Building Inspection Toolkit** helps you with machine learning projects in the field of damage recognition on built structures, currenlty with a focus on bridges made of reinforced concrete.
@@ -71,17 +71,19 @@ We provide carefully selected *train/val/test* splits. We introduce splits, when
 from bikit.utils import list_datasets, download_dataset
 
 # List all datasets
-list_datasets()
+all_dataset = list_datasets(verbose=0)
+all_dataset.keys()
 
 # Download data
-download_dataset("<name>") 
+DATASET_NAME = "mcds_bikit"
+download_dataset(DATASET_NAME) 
 ```
 
 **Use `BikitDataset`**
 
 ```python
 from bikit.utils import download_dataset
-from bikit.datasets import BikitDataset # Deprecated: from bikit.datasets.data import BikitDataset
+from bikit.datasets import BikitDataset
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
@@ -95,7 +97,7 @@ train_dataset = BikitDataset(name, split="train", transform=my_transform, return
 train_loader = DataLoader(dataset=train_dataset, batch_size=64, shuffle=False, num_workers=0)
 
 # Use it in your training loop
-for i, (imgs, labels) in enumerate(train_dataset):
+for i, (imgs, labels) in enumerate(train_loader):
 	print(i, imgs.shape, labels.shape)
 	break
 ```
@@ -109,6 +111,8 @@ for i, (imgs, labels) in enumerate(train_dataset):
 ```python
 #!pip install torchmetrics
 from bikit.metrics import EMR_mt, Recalls_mt
+import torch
+
 myemr = EMR_mt(use_logits=False)
 myrecalls = Recalls_mt()
 
@@ -144,10 +148,9 @@ print(myemr, myrecalls)
 from bikit.utils import list_models
 
 # List all models
-list_models()
-
-# Download and load model
-model, metadata = load_model("MCDS_ResNet50")
+# List all models
+all_models = list_models(verbose=0)
+all_models.keys()
 ```
 
 **Model Inference**
@@ -155,19 +158,32 @@ model, metadata = load_model("MCDS_ResNet50")
 ```python
 from bikit.utils import load_model, get_metadata, load_img_from_url
 from bikit.models import make_prediction
+from matplotlib import pyplot as plt 
+
+# Download and load model
+model, metadata = load_model("MCDSbikit_ResNet50_dhb", add_metadata=True)
 
 img = load_img_from_url("https://github.com/phiyodr/building-inspection-toolkit/raw/master/bikit/data/11_001990.jpg")
-model, metadata = load_model("MCDS_ResNet50", add_metadata=True)
+plt.imshow(np.asarray(img))
 prob, pred = make_prediction(model, img, metadata, print_predictions=True, preprocess_image=True)
-#> Crack                [██████████████████████████████████████  ]  95.86% 
+#> Crack                [██████████████████████████████████████  ]  95.79% 
 #> Efflorescence        [                                        ]   0.56% 
 #> ExposedReinforcement [                                        ]   0.18% 
-#> General              [                                        ]   0.60% 
-#> NoDefect             [                                        ]   1.29% 
+#> General              [                                        ]   0.61% 
+#> NoDefect             [                                        ]   1.31% 
 #> RustStaining         [                                        ]   0.44% 
 #> Scaling              [                                        ]   0.05% 
-#> Spalling             [                                        ]   0.85% 
-#> Inference time (CPU): 44.26 ms
+#> Spalling             [                                        ]   0.86% 
+#> Inference time (CPU): 207.96 ms
+```
+
+# Installation
+
+```bash
+!pip install git+https://github.com/phiyodr/building-inspection-toolkit
+!pip install patool
+!pip install efficientnet-pytorch
+!pip install torchmetrics
 ```
 
 
