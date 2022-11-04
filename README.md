@@ -7,7 +7,7 @@
 [![GitHub tag](https://img.shields.io/github/tag/phiyodr/building-inspection-toolkit.svg)](https://GitHub.com/phiyodr/building-inspection-toolkit/tags/)
 [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40dacl_ai)](https://twitter.com/dacl_ai)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/phiyodr/building-inspection-toolkit/blob/master/notebooks/bikit_demo_v0_1_6.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/phiyodr/building-inspection-toolkit/blob/master/notebooks/bikit_demo_v0_1_6.ipynb)
 
 
 **Building Inspection Toolkit** helps you with machine learning projects in the field of damage recognition on built structures, currenlty with a focus on bridges made of reinforced concrete.
