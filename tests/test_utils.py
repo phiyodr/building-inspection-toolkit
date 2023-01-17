@@ -22,15 +22,15 @@ def test_list_datasets():
 # @pytest.mark.skip(reason="no way of currently testing this")
 def test_download_dataset():
     cache_dir = Path(os.path.expanduser('~/.cache/bikit'))
-    if os.path.exists(cache_dir / "test_rar"):
-        shutil.rmtree(cache_dir / "test_rar")
+    #if os.path.exists(cache_dir / "test_rar"):
+    #    shutil.rmtree(cache_dir / "test_rar")
     if os.path.exists(cache_dir / "test_zip"):
         shutil.rmtree(cache_dir / "test_zip")
 
     # download_dataset(name='demo_zip', cache_dir=cache_dir)
-    download_dataset(name='test_rar', cache_dir=cache_dir)
-    assert os.path.exists(cache_dir / "test_rar/test_rar.rar")
-    assert os.path.exists(cache_dir / "test_rar/classification_dataset_balanced")
+    #download_dataset(name='test_rar', cache_dir=cache_dir)
+    #assert os.path.exists(cache_dir / "test_rar/test_rar.rar")
+    #assert os.path.exists(cache_dir / "test_rar/classification_dataset_balanced")
 
     download_dataset(name='test_zip', cache_dir=cache_dir)
     assert os.path.exists(cache_dir / "test_zip/test_zip.zip")

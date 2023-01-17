@@ -17,7 +17,7 @@ class BikitDataset(Dataset):
     """PyTorch Dataset for all Datasets"""
     #bikit_path = Path(dirname(dirname(__file__)))
     #bikit_path = Path(os.path.join(bikit_path, "bikit"))
-    bikit_path = Path(os.path.join(dirname(dirname(__file__)), "bikit"))
+    bikit_path = Path(os.path.join(os.path.dirname(os.path.dirname(__file__)), "bikit"))
 
     with open(Path(os.path.join(bikit_path, "data/datasets.json"))) as f:
         DATASETS = json.load(f)
@@ -42,7 +42,7 @@ class BikitDataset(Dataset):
         elif img_type == "cv2":
             self.img_loader = cv2_loader
         assert name in list(self.DATASETS.keys()), f"This name does not exists. Use something from {list(DATASETS.keys())}."
-        bikit_path = Path(os.path.join(dirname(dirname(__file__)), "bikit"))
+        bikit_path = Path(os.path.join(os.path.dirname(os.path.dirname(__file__)), "bikit"))
 
         self.csv_filename = Path(os.path.join(bikit_path, "data", name) + ".csv")
         self.split_column =DATASETS[name]["split_column"]
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     dataset1 = BikitDataset(name="cds", split="train")
     dataset2 = BikitDataset(name="sdnet", split="train", img_type="cv2")
     dataset3 = BikitDataset(name="bcd", split="train", img_type="cv2")
-    dataset4 = BikitDataset(name="mcds_Bikit", split="train", img_type="cv2")
+    dataset4 = BikitDataset(name="mcds_bikit", split="train", img_type="cv2")
     #train_dataset = BikitDataset(split="", load_all_in_mem=True)
     img, targets = dataset1[0]
     print(img.shape, targets.shape)
