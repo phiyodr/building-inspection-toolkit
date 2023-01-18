@@ -12,7 +12,7 @@ import requests
 import cv2
 import requests
 from io import BytesIO
-
+import torch
 
 pp = pprint.PrettyPrinter(indent=4)
 

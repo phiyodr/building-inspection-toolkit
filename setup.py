@@ -8,7 +8,7 @@ with open("README.md", "r") as file:
     
 setuptools.setup(
     name="building-inspection-toolkit",
-    version="0.2.0",
+    version="0.2.1",
     author="Philipp J. Roesch, Johannes Flotzinger",
     author_email="philipp.roesch@unibw.de, johannes.flotzinger@unibw.de",
     description="Building Inspection Toolkit",
