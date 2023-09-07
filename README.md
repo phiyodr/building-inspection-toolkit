@@ -47,6 +47,7 @@ We provide carefully selected *train/val/test* splits. We introduce splits, when
 
 | `name`                      | Note 																								  |
 | ----------------------------|-------------------------------------------------------------------------------------------------------|
+| `dacl1k`		        	  |  6-class multi-target dataset. |
 | `cds`                       | *Original dataset* with bikit's *train/val/test* splits         
 | `bcd`                       | *Original dataset* with modified *train/val/test* splits (original train was splitted into *train/val*)      
 | `sdnet`                     | *Original dataset* with bikit's *train/val/test* splits; Many wrong labels    
@@ -57,8 +58,13 @@ We provide carefully selected *train/val/test* splits. We introduce splits, when
 | `mcds_bikit`                |  We create a 8-class dataset from Hüthwohl et al. which prevent wrong labels with bikit's *train/val/test* splits. 
 | `codebrim-classif-balanced` | *Original dataset* with original *train/val/test* splits: Underrepresented classes are oversampled.  |
 | `codebrim-classif`          | *Original dataset* with original *train/val/test* splits. |
+| `meta2`		        	  |  6-class multi-target dataset based on codebrim-classif, and mcds_bikit. |
 | `meta3`		        	  |  6-class multi-target dataset based on bcd, codebrim-classif, and mcds_bikit. |
 | `meta4`       		   	  |  6-class multi-target dataset based on bcd, codebrim-classif, mcds_bikit, and sdnet_bikit_binary.  |
+| `meta2+dacl1k`		      |  6-class multi-target dataset based on dacl1k, codebrim-classif, and mcds_bikit. |
+| `meta3+dacl1k`		      |  6-class multi-target dataset based on dacl1k, bcd, codebrim-classif, and mcds_bikit. |
+| `meta4+dacl1k`       		  |  6-class multi-target dataset based on dacl1k, bcd, codebrim-classif, mcds_bikit, and sdnet_bikit_binary.  |
+
 
 
 # Usage
