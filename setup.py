@@ -26,18 +26,18 @@ setuptools.setup(
         # If any package contains *.txt or *.rst files, include them:
         "": ["*.txt", "*.csv", "*.json"]},
     install_requires=[
-        "numpy > 1.20"
-        "requests"
-        "torch"
-        "torchvision"
-        "pandas"
-        "Pillow"
-        "patool"
-        "pathlib"
-        "tqdm"
-        "matplotlib"
-        "opencv-python-headless" # opencv-python
-        "efficientnet_pytorch"
+        "numpy > 1.20",
+        "requests",
+        "torch",
+        "torchvision",
+        "pandas",
+        "Pillow",
+        "patool",
+        "pathlib",
+        "tqdm",
+        "matplotlib",
+        "opencv-python-headless",
+        "efficientnet_pytorch",
         "torchmetrics"
         ]
     )
